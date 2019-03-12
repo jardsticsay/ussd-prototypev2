@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="src/home.css"></style>
+        <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+        <script src="assets/jquery-3.2.1.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+        <script src="ussd.js"></script>
+        
+    </head>
+    <body>
+        <div class="container-fluid ussd-container">
+            <!-- <div id="content-container1" class="col-xs-12">
+                <div class="col-xs-12 header">
+                    <h1 id="h1n1">USSD</h1>   
+                </div>
+                <div class="col-xs-12 item-list">
+                    <label for="" class="col-xs-12">Mobile Number</label>
+                    <input type="number" id="mobileNumber" maxlength="13"><br/>
+                    <label for="" class="col-xs-12">USSD Code</label><br/>
+                    <select id="ussdCode">
+                        <option value="*121#">*121#</option>
+                    </select>
+                </div>
+                <div class="col-xs-12 action-dial">
+                    <button id="dial" class="btn btn-success">Dial</button>
+                </div>
+            </div> -->
+            <div id="content-container2" class="col-xs-12">
+                <div id="item-list">
+                    <h4 id="entryPoint"></h4>
+                    <p id="firstMenu"></p>
+                    <input type="number" class="input-container" id="choiceCode" autofocus>
+                </div>
+                    <!-- <option id="optionMenu" value=""></option> -->
+                    <!-- <input type="text" value="" id="inputMenu"> -->
+                    <!-- <input type="text" id="content1" class="content-container"> -->
+                    <input type="number" class="input-container" id="choiceCode2" autofocus>
+                    <!-- <input type="number" class="input-container" id="choiceCode3" autofocus> -->
+                    <br>
+                
+                <div class="actions">
+                    <a class="col-xs-6">Cancel</a>
+                    <a class="col-xs-6" id="sendReq">Send</a>
+                </div>
+                <!-- <button id="getallData">getAll</button> -->
+                <p id="list-items"></p>
+            </div>
+            <span class="loader"></span>
+        </div>
+    </body>
+
+</html>
