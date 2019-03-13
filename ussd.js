@@ -17,8 +17,11 @@ var keyWord;
 var arrayofPages= [];
 var newArrayofPages = [];
 var abs = 1;
+var choiceCode = $('#choiceCode').val();
 var clearInput = $('#choiceCode').val('');
-console.log(abs);
+var a = a || 0;
+var lastPageArray = "";
+console.log(a);
 
 
 $(function (){
@@ -26,6 +29,39 @@ $(function (){
     $('#getallData').click(function(){
         
     })
+
+    var zeroVal = function(){
+        const arr = [...Array(100)].map((_, i) => i);
+        console.log(arr[1]);
+    }
+
+    zeroVal();
+
+    var lastItemValue = function(){
+    var group = ["a","b","c","d"];
+    var groupLength = group.length;
+
+    for(var i = 0;i < groupLength;i++){
+    var item = group[i];
+    console.log(item);
+
+    // Do something if is the last iteration of the array
+    if((i + 1) == (groupLength)){
+        item = "something";
+        console.log("Last iteration with item : " + item);
+        }
+    }
+    }
+
+    lastItemValue();
+
+    var changeZeroValue = function(){
+        console.log(choiceCode);
+        if(choiceCode == 0){
+            choiceCode = undefined;
+        }
+    }
+
     /* API CALLS */
    var firstInstance = function() {
         $.each(parseJson, function(key, value){
@@ -87,14 +123,28 @@ $(function (){
                 console.log(value.nextpage);
                 for( i = 0; i < value.queryList.length; i++){
                     allPageTwo = value.queryList[i].pagecode;
+                    console.log(allPageTwo);
+                        if ( allPageTwo === undefined){
+                            allPageTwo ='0';
+                            console.log(allPageTwo);
+                        }
                     newArrayofPages.push(allPageTwo);
-                    JSON.stringify(newArrayofPages)
                     console.log(newArrayofPages);
+                    console.log(newArrayofPages[newArrayofPages.length-1])
                 }
-                
+
             }
         });
     }
+
+    var converToZero = function(){
+        if(lastPageCount === undefined){
+            lastPageCount = lastPageCount || 0;
+            console.log(lastPageCount);
+        }
+    }
+
+   
     
 
     var getAllPageValue = function (){
@@ -285,6 +335,7 @@ $(function (){
     $('#sendReq').click(function(){
         console.log($('#choiceCode').val());
         choiceCode = $('#choiceCode').val();
+        console.log(choiceCode);
 
         if ( pageNumber == 1){
             secondPageContent="";
@@ -293,51 +344,49 @@ $(function (){
             clearInput;
         }
         else if( pageNumber == 2){
-            
-            secondPageChoice();
             getAllPageValue();
             if (newArrayofPages[newArrayofPages.length-1] === choiceCode){
-                console.log('goback');
+                console.log('go back to first page');
                 pageNumber = pageNumber - 1;
                 forNextPage = +forNextPage - +abs;
                 secondPageContent="";
                 secondPageHeader="";
                 firstPageContent="";
                 firstPageHeader="";
-                $('#choiceCode').val('');
+                clearInput;
                 firstChoice();
             }
             else if ( newArrayofPages.indexOf(choiceCode) === -1 ){
-                forNextPage = +forNextPage - +abs;
-                secondPageContent="";
-                secondPageHeader="";
+                alert('invalid choice');
                 console.log(forNextPage);
                 document.getElementById("firstMenu").innerHTML = secondPageContent;
                 document.getElementById("entryPoint").innerHTML = secondPageHeader;
-                secondPageChoice();
+                
                 
             }
-            else if( newArrayofPages.indexOf(choiceCode) > -1){
+            else if( newArrayofPages.indexOf(choiceCode) > -2){
+                getAllPageValue();
                 keyWord = keyMatch+choiceCode;
                 console.log(keyWord);
                 gigaPageContent = "";
                 gigaHeader = "";
                 console.log(forNextPage);
                 secondPageChoice();
+                forNextPage = +forNextPage + +abs;
                 thirdPageContent = gigaPageContent;
                 thirdPageHeader = gigaHeader;
-                
                 console.log(thirdPageContent);
                 $('#choiceCode').val('');
             }
+        
             
 
         }
         else if( pageNumber == 3){
-            if (newArrayofPages.indexOf(choiceCode) === -1 ){
-                console.log('going back');
+            if (newArrayofPages[newArrayofPages.length-1] === choiceCode){
+                console.log('going to second page')
                 pageNumber = pageNumber - 1;
-                
+                forNextPage = +forNextPage - +abs;
                 console.log(forNextPage);
                 clearInput;
                 document.getElementById("firstMenu").innerHTML = secondPageContent;
@@ -345,16 +394,25 @@ $(function (){
                 keyWord = keyMatch;
                 console.log(keyWord);
             }
-            else if( newArrayofPages.indexOf(choiceCode) > -1){
+            else if (newArrayofPages.indexOf(choiceCode) === -1 ){
+                console.log('invalid choice');
+                document.getElementById("firstMenu").innerHTML = thirdPageContent;
+                document.getElementById("entryPoint").innerHTML = thirdPageHeader;
+                
+                
+            }
+            else if( newArrayofPages.indexOf(choiceCode) > -2){
                 keyWord = keyWord+choiceCode;
-                forNextPage = +forNextPage + +abs;
+                
                 console.log(forNextPage);
                 console.log(keyWord);
                 gigaPageContent = "";
                 gigaHeader = "";
                 secondPageChoice();
+                forNextPage = +forNextPage + +abs;
                 clearInput;
             }
+            
         }
         else if ( pageNumber == 4 ){
             if (newArrayofPages.indexOf(choiceCode) === -1 ){
