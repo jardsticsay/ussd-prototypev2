@@ -5,17 +5,20 @@ var actionPoint = "http://127.0.0.1/SwissKnife_dev_stage/databank.cgi";
 var xhr = new  XMLHttpRequest();
 var parseJson = false;
 var firstPageContent = "";
-var secondPageContent = "";
-var thirdPageContent = "";
 var firstPageHeader = "";
+var secondPageContent = "";
 var secondPageHeader = "";
+var thirdPageContent = "";
 var thirdPageHeader = "";
+var fourthPageContent = "";
+var fourthPageHeader = "";
 var gigaPageContent = "";
 var pageNumber;
 var forNextPage;
 var keyWord;
 var arrayofPages= [];
 var newArrayofPages = [];
+var newArrayofPageOne = [];
 var abs = 1;
 var choiceCode = $('#choiceCode').val();
 var clearInput = $('#choiceCode').val('');
@@ -75,7 +78,6 @@ $(function (){
                 }
                 document.getElementById("entryPoint").innerHTML = firstPageHeader;
                 document.getElementById("firstMenu").innerHTML = firstPageContent;
-                $('.loader').hide();
             }
             
         });
@@ -120,7 +122,6 @@ $(function (){
     var pageValues = function(){
         $.each(allPageTwoValue, function(key, value){
             if (key == 'methodResponse'){
-                console.log(value.nextpage);
                 for( i = 0; i < value.queryList.length; i++){
                     allPageTwo = value.queryList[i].pagecode;
                     console.log(allPageTwo);
@@ -137,14 +138,59 @@ $(function (){
         });
     }
 
-    var converToZero = function(){
-        if(lastPageCount === undefined){
-            lastPageCount = lastPageCount || 0;
-            console.log(lastPageCount);
-        }
+    var allPageOneValue = function(){
+        $.each(allPageId, function(key, value){
+            if (key == 'methodResponse'){
+                console.log(value);
+                for( i = 0; i < value.queryList.length; i++){
+                    console.log(value.queryList[i].id);
+                    allPageOne = value.queryList[i].id;
+                    newArrayofPageOne.push(allPageOne);
+                    console.log(newArrayofPageOne);
+                }
+            }
+        })
     }
 
-   
+    var getPageId = function (){
+        var dataToPass = {
+            "method":"searchTwoField",
+            "data":{
+                "table":"keyword",
+                "field1":"mainkeyword",
+                "value1":"*121#",
+                "operator":"AND",
+                "field2":"page",
+                "value2": "2"
+            }
+        }
+        $.ajax({
+            type:"POST",
+            url: apiUrl,
+            contentType:"json",
+            data : JSON.stringify(
+                dataToPass
+            ),
+            beforeSend : function(xhr){
+                xhr.setRequestHeader("Basic", btoa(username + ":" + password));
+                xhr.setRequestHeader("Action", actionPoint);
+            },
+            success : function(response){
+                allPageId = JSON.parse(response);
+                console.log(allPageId);
+                allPageOneValue();
+            },
+            error : function(textStatus,errorThrown){
+                alert('Network connection error, Reload page');
+                location.reload();
+            },
+            async: false
+        });
+    }
+  
+    getPageId();
+
+    
     
 
     var getAllPageValue = function (){
@@ -338,10 +384,16 @@ $(function (){
         console.log(choiceCode);
 
         if ( pageNumber == 1){
-            secondPageContent="";
-            secondPageHeader="";
-            firstChoice();
-            clearInput;
+            if(newArrayofPageOne.indexOf(choiceCode) === -1){
+                alert('invalid choice');
+            }
+            else {
+                secondPageContent="";
+                secondPageHeader="";
+                firstChoice();
+                clearInput;
+            }
+            
         }
         else if( pageNumber == 2){
             getAllPageValue();
@@ -397,25 +449,24 @@ $(function (){
             else if (newArrayofPages.indexOf(choiceCode) === -1 ){
                 console.log('invalid choice');
                 document.getElementById("firstMenu").innerHTML = thirdPageContent;
-                document.getElementById("entryPoint").innerHTML = thirdPageHeader;
-                
-                
+                document.getElementById("entryPoint").innerHTML = thirdPageHeader; 
             }
             else if( newArrayofPages.indexOf(choiceCode) > -2){
                 keyWord = keyWord+choiceCode;
-                
                 console.log(forNextPage);
                 console.log(keyWord);
                 gigaPageContent = "";
                 gigaHeader = "";
                 secondPageChoice();
                 forNextPage = +forNextPage + +abs;
+                fourthPageContent = gigaPageContent;
+                fourthPageHeader = gigaHeader;
                 clearInput;
             }
             
         }
         else if ( pageNumber == 4 ){
-            if (newArrayofPages.indexOf(choiceCode) === -1 ){
+            if (newArrayofPages[newArrayofPages.length-1] === choiceCode){
                 console.log('goin back to page3');
                 pageNumber = pageNumber - 1;
                 console.log(pageNumber);
@@ -426,6 +477,21 @@ $(function (){
                 document.getElementById("entryPoint").innerHTML = thirdPageHeader;
                 keyWord = keyMatch + forNextPage;
                 console.log(keyWord);
+            }
+            else if (newArrayofPages.indexOf(choiceCode) === -1 ){
+                console.log('invalid choice');
+                document.getElementById("firstMenu").innerHTML = fourthPageContent;
+                document.getElementById("entryPoint").innerHTML = fourthPageHeader; 
+            }
+            else if( newArrayofPages.indexOf(choiceCode) > -2){
+                keyWord = keyWord+choiceCode;
+                console.log(forNextPage);
+                console.log(keyWord);
+                gigaPageContent = "";
+                gigaHeader = "";
+                secondPageChoice();
+                forNextPage = +forNextPage + +abs;
+                clearInput;
             }
         }
 
