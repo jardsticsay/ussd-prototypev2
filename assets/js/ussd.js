@@ -28,42 +28,6 @@ console.log(a);
 
 
 $(function (){
-    var me = this;
-    $('#getallData').click(function(){
-        
-    })
-
-    var zeroVal = function(){
-        const arr = [...Array(100)].map((_, i) => i);
-        console.log(arr[1]);
-    }
-
-    zeroVal();
-
-    var lastItemValue = function(){
-    var group = ["a","b","c","d"];
-    var groupLength = group.length;
-
-    for(var i = 0;i < groupLength;i++){
-    var item = group[i];
-    console.log(item);
-
-    // Do something if is the last iteration of the array
-    if((i + 1) == (groupLength)){
-        item = "something";
-        console.log("Last iteration with item : " + item);
-        }
-    }
-    }
-
-    lastItemValue();
-
-    var changeZeroValue = function(){
-        console.log(choiceCode);
-        if(choiceCode == 0){
-            choiceCode = undefined;
-        }
-    }
 
     /* API CALLS */
    var firstInstance = function() {

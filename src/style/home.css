@@ -152,3 +152,42 @@ body{
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+
+/* Dashboard Css Styl */
+
+#ussd-edit-contents.container-fluid{
+  margin-right: 2%;
+  margin-left: 2%;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover{
+  color:#333 !important;
+  background: #e1e1e1 !important;
+  border-radius: 4px 4px 0 0;
+}
+.tab-content{
+  background: #e1e1e1;
+}
+div#exTab3 {
+  margin:0 auto;
+}
+.tab-content{
+  border-radius: 0 4px 4px 4px;
+}
+.inputContainer {
+  width:45%;
+  margin:2% auto;
+}
+.input-size {
+  max-width:80%;
+}
+.nav-tabs > li, .nav-pills > li {
+  float:none;
+  display:inline-block;
+  *display:inline; /* ie7 fix */
+   zoom:1; /* hasLayout ie7 trigger */
+}
+.nav-tabs, .nav-pills {
+  text-align:center;
+}
