@@ -191,3 +191,32 @@ div#exTab3 {
 .nav-tabs, .nav-pills {
   text-align:center;
 }
+input#menu-item {
+  width:100%;
+  margin-bottom:20px;
+}
+textarea.menu-header {
+  min-width:100%;
+  min-height:70px;
+}
+.headerBtn {
+  padding:20px;
+}
+.btn-primary.new-field{
+  float:right;
+  margin-right:40px;
+}
+.headerBtn span{
+  font-size:25px;
+  font-weight:700;
+}
+.row.Buttons {
+  text-align:center;
+}
+
+div#ussd-edit-contents {
+  padding-bottom:40px;
+}
+button.btn.btn-primary.save {
+  padding:.50em 3em !important;
+}
