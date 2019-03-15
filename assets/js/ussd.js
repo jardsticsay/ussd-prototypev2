@@ -24,6 +24,7 @@ var choiceCode = $('#choiceCode').val();
 var clearInput = $('#choiceCode').val('');
 var a = a || 0;
 var lastPageArray = "";
+var onEnter = document.getElementById('choiceCode');
 console.log(a);
 
 
@@ -346,7 +347,12 @@ $(function (){
         console.log($('#choiceCode').val());
         choiceCode = $('#choiceCode').val();
         console.log(choiceCode);
+        inputFunction();
 
+        $('#choiceCode').val('');
+    });
+
+    var inputFunction = function(){
         if ( pageNumber == 1){
             if(newArrayofPageOne.indexOf(choiceCode) === -1){
                 alert('invalid choice');
@@ -377,8 +383,6 @@ $(function (){
                 console.log(forNextPage);
                 document.getElementById("firstMenu").innerHTML = secondPageContent;
                 document.getElementById("entryPoint").innerHTML = secondPageHeader;
-                
-                
             }
             else if( newArrayofPages.indexOf(choiceCode) > -2){
                 getAllPageValue();
@@ -411,11 +415,12 @@ $(function (){
                 console.log(keyWord);
             }
             else if (newArrayofPages.indexOf(choiceCode) === -1 ){
-                console.log('invalid choice');
+                alert('invalid choice');
                 document.getElementById("firstMenu").innerHTML = thirdPageContent;
                 document.getElementById("entryPoint").innerHTML = thirdPageHeader; 
             }
             else if( newArrayofPages.indexOf(choiceCode) > -2){
+                getAllPageValue();
                 keyWord = keyWord+choiceCode;
                 console.log(forNextPage);
                 console.log(keyWord);
@@ -458,8 +463,14 @@ $(function (){
                 clearInput;
             }
         }
+    }
 
-        $('#choiceCode').val('');
+    var enterInput = document.getElementById("choiceCode");
+    enterInput.addEventListener("keyup", function(event){
+        if (event.keyCode === 13){
+            event.preventDefault();
+            document.getElementById("sendReq").click();
+        }
     });
 
     $('#dial').click(function(){

@@ -5,6 +5,8 @@ var actionPoint = "http://127.0.0.1/SwissKnife_dev_stage/databank.cgi";
 var xhr = new  XMLHttpRequest();
 var parseJson = false;
 var firstPageContent = "";
+var allSecondContents=[];
+var arraySecondHeader=[];
 var max_fields = 9;
 
 $(function (){
@@ -29,16 +31,16 @@ $(function (){
                     input.setAttribute("type", "text");
                     input.setAttribute("id", "menu-item");
                     input.setAttribute("value", firstArray[i]);
-                    for ( a = 0; a < i.length; a++){
-                        var remove = document.createElement("BUTTON");
-                        remove.setAttribute("id", "btnRemove");
-                        remove.setAttribute("value","Remove");
-                        document.getElementById('peritem').appendChild(remove);
-                        document.getElementById("btnRemove").innerText = "Remove";
-                    }
+                    // for ( a = 0; a < i.length; a++){
+                    //     var remove = document.createElement("BUTTON");
+                    //     remove.setAttribute("id", "btnRemove");
+                    //     remove.setAttribute("value","Remove");
+                    //     document.getElementById('peritem').appendChild(remove);
+                    //     document.getElementById("btnRemove").innerText = "Remove";
+                    // }
                     
                     
-                    console.log(remove);
+                    // console.log(remove);
                     document.getElementById('peritem').appendChild(input);
                     
                     
@@ -83,6 +85,37 @@ $(function (){
     
     getFirstMenu();
 
+    var loopSecondContentOne = function(){
+        $.each(allPageTwoData, function(key, value){
+            if(key == 'methodResponse'){
+                for( i = 0; i < value.queryList.length; i++){
+                    console.log(value.queryList[i]);
+                    if(value.queryList[0]){
+                        firstSecondPage = value.queryList[i].content.split('_').join(') ');
+                        arrayFirstSecondPage = firstSecondPage.split('|');
+                        
+                        allSecondContents.push(arrayFirstSecondPage);
+                       
+                        allSecondHeader = value.queryList[i].header;
+                        
+                        arraySecondHeader.push(allSecondHeader);
+                        console.log(arraySecondHeader);
+                        for(a=0;a < arraySecondHeader.length; a++){
+                            console.log(arraySecondHeader[i]);
+                            var header = document.createElement("textarea");
+                            var headerConent = document.createTextNode(arraySecondHeader[i])
+                            header.setAttribute("id", "secondHeader");
+                            header.setAttribute("value", arraySecondHeader[i]);
+                            header.appendChild(headerConent)
+                            document.getElementById('headerContent2').appendChild(header);
+                        }
+                    }
+                    
+                }
+            }
+        })
+    }
+
     var getSecondMenu = function(){
         var dataToPass ={
             "method":"searchTwoField",
@@ -109,6 +142,7 @@ $(function (){
             success: function(response){
                 allPageTwoData = JSON.parse(response);
                 console.log(allPageTwoData);
+                loopSecondContentOne();
             },
             error: function(textStatus,errorThrown){
                 alert('Network connection error, Reload page');
@@ -117,6 +151,7 @@ $(function (){
             async: false
         })
     }
+
     getSecondMenu();
 
 
