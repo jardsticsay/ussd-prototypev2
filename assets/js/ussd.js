@@ -25,8 +25,11 @@ var clearInput = $('#choiceCode').val('');
 var a = a || 0;
 var lastPageArray = "";
 var onEnter = document.getElementById('choiceCode');
-console.log(a);
-
+var subscription = "1) Subscribe";
+var contentArray =[];
+var subscribeVal;
+var getSub="";
+console.log(subscription);
 
 $(function (){
 
@@ -156,7 +159,6 @@ $(function (){
     getPageId();
 
     
-    
 
     var getAllPageValue = function (){
         var dataToPass = {
@@ -231,7 +233,7 @@ $(function (){
         $.each(gigaData, function(key,value){
             if(key == 'methodResponse'){
                 console.log(forNextPage);
-               console.log(value.queryList[0].nextpage)
+                console.log(value.queryList[0].nextpage);
                 pageNumber = value.queryList[0].page;
                 console.log(pageNumber);
                 gigaHeader = value.queryList[0].header;
@@ -240,6 +242,8 @@ $(function (){
                 for (i = 0; i < gigaArray.length; i ++){
                     gigaPageContent += "<span>" + gigaArray[i] + "<span><br/>";
                     console.log(gigaArray);
+                    getSub = secondArray[0];
+                    console.log(getSub);
                 }
                 document.getElementById("entryPoint").innerHTML = gigaHeader ;
                 document.getElementById("firstMenu").innerHTML = gigaPageContent ;
@@ -291,19 +295,25 @@ $(function (){
                 pageCode = value.pagecode;
                 forNextPage = value.nextpage;
                 keyMatch = value.actualkeyword;
+                subscribeVal = value.subscribe;
+                console.log(subscribeVal);
                 secondContent = value.content.split('_').join(') ');
                 secondArray = secondContent.split('|');
                 secondPageHeader = value.header;
                 for ( i = 0; i < secondArray.length; i++){
                     secondPageContent += "<span>" + secondArray[i] +  "</span><br/>";
-                    console.log(secondArray[i]);
+                    console.log(secondArray[i]);  
+                    getSub = secondArray[0];
+                    console.log(getSub);
                 }
+                
                 document.getElementById("entryPoint").innerHTML = secondPageHeader;
                 document.getElementById("firstMenu").innerHTML = secondPageContent;
                 $('.loader').hide();
             }
-            
         });
+        contentArray.push(secondArray);
+        console.log(contentArray[0]);
     }
 
     
@@ -378,6 +388,11 @@ $(function (){
                 clearInput;
                 firstChoice();
             }
+            else if(  getSub == subscription  && subscribeVal == 1 && choiceCode == 1 ){
+                alert('Thank you for subscribing, Wait for a text confirmation.');
+                clearInput;
+                location.reload();
+            }
             else if ( newArrayofPages.indexOf(choiceCode) === -1 ){
                 alert('invalid choice');
                 console.log(forNextPage);
@@ -398,6 +413,7 @@ $(function (){
                 console.log(thirdPageContent);
                 $('#choiceCode').val('');
             }
+            
         
             
 
@@ -413,6 +429,11 @@ $(function (){
                 document.getElementById("entryPoint").innerHTML = secondPageHeader;
                 keyWord = keyMatch;
                 console.log(keyWord);
+            }
+            else if(  getSub == subscription  && subscribeVal == 1 && choiceCode == 1 ){
+                alert('Thank you for subscribing, Wait for a text confirmation.');
+                clearInput;
+                location.reload();
             }
             else if (newArrayofPages.indexOf(choiceCode) === -1 ){
                 alert('invalid choice');

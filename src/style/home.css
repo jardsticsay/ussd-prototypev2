@@ -191,9 +191,9 @@ div#exTab3 {
 .nav-tabs, .nav-pills {
   text-align:center;
 }
-input#menu-item {
+input#menu-item,#oneChoice {
   width:100%;
-  margin-bottom:20px;
+  margin-bottom:10px;
 }
 textarea.menu-header,textarea#secondHeader {
   min-width:100%;
