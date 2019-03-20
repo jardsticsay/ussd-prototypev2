@@ -220,3 +220,21 @@ div#ussd-edit-contents {
 button.btn.btn-primary.save {
   padding:.50em 3em !important;
 }
+.item-choice{
+  margin-bottom:1em;
+}
+
+i.col-md-1.fa.fa-arrow-circle-right {
+  text-align:center;
+  font-size:20px;
+  color:#337ab7;
+  margin-top:2px;
+  cursor:pointer;
+}
+.tooltip.right .tooltip-inner {
+  background-color:#2dbe60;
+}
+.tooltip.right .tooltip-arrow {
+  border-bottom-color: #2dbe60;
+  
+} 

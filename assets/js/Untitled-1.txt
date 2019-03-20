@@ -1,0 +1,104 @@
+<div class="inputContainer">
+    <div class="form-group">
+        <div id="headerContent">
+            <h4>Menu Header</h4>
+        </div>
+        <div id="menuChoices">
+            <h4>Menu Content</h4>
+        </div>
+        <div id="peritem">  
+        </div>
+    </div>
+</div>
+
+
+<div class="inputContainer">
+        <div class="form-group">
+            <div id="menuTagOne">
+
+            </div>
+            <div id="headerContentOne">
+                <p>Header</p>
+            </div>
+            <div id="menuOne">
+                <p>Menu List</p>  
+            </div>
+        </div>
+        <div class="form-group">
+            <div id="menuTagTwo">
+
+            </div>
+            <div id="headerContentTwo">
+                <p>Header</p>
+            </div>
+            <div id="menuTwo">
+                <p>Menu List</p>    
+            </div>
+        </div>
+        <div class="form-group">
+            <div id="menuTagThree">
+
+            </div>
+            <div id="headerContentThree">
+                <p>Header</p>
+            </div>
+            <div id="menuThree">
+                <p>Menu List</p>    
+            </div>
+        </div>
+        <div class="form-group">
+            <div id="menuTagFour">
+
+            </div>
+            <div id="headerContentFour">
+                <p>Header</p>
+            </div>
+            <div id="menuFour">
+                <p>Menu List</p>    
+            </div>
+        </div>
+        <div class="form-group">
+            <div id="menuTagFive">
+
+            </div>
+            <div id="headerContentFive">
+                <p>Header</p>
+            </div>
+            <div id="menuFive">
+                <p>Menu List</p>    
+            </div>
+        </div>
+        <div class="form-group">
+            <div id="menuTagSix">
+
+            </div>
+            <div id="headerContentSix">
+                <p>Header</p>
+            </div>
+            <div id="menuSix">
+                <p>Menu List</p>    
+            </div>
+        </div>
+        <div class="form-group">
+            <div id="menuTagSeven">
+
+            </div>
+            <div id="headerContentSeven">
+                <p>Header</p>
+            </div>
+            <div id="menuSeven">
+                <p>Menu List</p>    
+            </div>
+        </div>
+        <div class="form-group">
+            <div id="menuTagEight">
+
+            </div>
+            <div id="headerContentEight">
+                <p>Header</p>
+            </div>
+            <div id="menuEight">
+                <p>Menu List</p>    
+            </div>
+        </div>
+    </div>

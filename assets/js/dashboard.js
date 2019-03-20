@@ -17,13 +17,23 @@ var max_fields = 9;
 var secondHeader="";
 var secondKeyword="";
 var secondPageContent="";
+var pageNumber;
+var actualMkeyword;
+var pageCode;
+var keyword;
+var testVal;
+var getIconId =[];
 
+
+var gettabval = function(){
+    var test = document.getElementById("thirdTab");
+    testVal = test.value;
+    console.log(testVal);
+}
 
 $(function (){
-    console.log(document.getElementById('peritem'));
-
+    $('body').tooltip({ selector: '[data-toggle="tooltip"]' });
     var loopFirstContent = function(){
-        var list = document.getElementById("inputContainer");
         $.each(parseJson, function(key, value){
             if(key == 'methodResponse'){
                 firstContent = value.content.split('_').join(') ');
@@ -33,32 +43,31 @@ $(function (){
                 var textarea = document.createElement("textarea");
                 var taContent = document.createTextNode(firstPageHeader);
                 textarea.setAttribute("type", "text");
-                textarea.setAttribute("class", "menu-header");
+                textarea.setAttribute("class", "menu-header first-header");
                 textarea.appendChild(taContent);
                 document.getElementById('headerContent').appendChild(textarea);
                 for (i = 0; i < firstArray.length; i++){
                     console.log(firstArray[i]);
                     var input = document.createElement("INPUT");
                     input.setAttribute("type", "text");
-                    input.setAttribute("id", "menu-item");
+                    input.setAttribute("id", "menu-item" +i);
+                    input.setAttribute("class","col-md-11 item-choice first-choice")
                     input.setAttribute("value", firstArray[i]);
-                    // for ( a = 0; a < i.length; a++){
-                    //     var remove = document.createElement("BUTTON");
-                    //     remove.setAttribute("id", "btnRemove");
-                    //     remove.setAttribute("value","Remove");
-                    //     document.getElementById('peritem').appendChild(remove);
-                    //     document.getElementById("btnRemove").innerText = "Remove";
-                    // }
-                    
-                    
-                    // console.log(remove);
+                    icon = document.createElement("I");
+                    icon.setAttribute("class", "col-md-1 fa fa-arrow-circle-right first-arrow");
+                    icon.setAttribute("id", i);
+                    icon.setAttribute("data-toggle", "tooltip");
+                    icon.setAttribute("data-placement", "right");
+                    icon.setAttribute("title","Click to edit the contents of this menu");
+                    console.log(icon.id);
+                    getIconId.push(icon.id);
                     document.getElementById('peritem').appendChild(input);
+                    document.getElementById('peritem').appendChild(icon);
+                    
                 }
             }
         })
     }
-
-
 
 
 
@@ -96,8 +105,310 @@ $(function (){
     }
     
     getFirstMenu();
+    
 
-    var loopMenuOne = function(){
+    var firstChoice = function (){
+        var dataToPass = {"method":"select",
+                            "data":{
+                            "table":"keyword",
+                            "returnID":btnIndex
+                        }
+                    }
+        $.ajax({
+            type:"POST",
+            url: apiUrl,
+            contentType: "json",
+            data: JSON.stringify(dataToPass),
+            beforeSend: function(xhr){
+                xhr.setRequestHeader ("Basic", btoa(username + ":" + password));
+                xhr.setRequestHeader ("Action", actionPoint);
+            },
+            success : function(response){
+                secondContent = JSON.parse(response);
+                editSecondContent();
+            },
+            error: function(textStatus,errorThrown){
+                alert('Network connection error, Reload page');
+                location.reload();
+            },
+            async: false
+        });
+    }
+
+    var editSecondContent = function(){
+        $.each(secondContent, function(key, value){
+            if(key == 'methodResponse'){
+                firstContent = value.content.split('_').join(') ');
+                firstArray = firstContent.split('|');
+                firstPageHeader = value.header;
+                console.log(firstPageHeader);
+                actualMkeyword = value.actualkeyword;
+                textarea = document.createElement("textarea");
+                taContent = document.createTextNode(firstPageHeader);
+                textarea.setAttribute("type", "text");
+                textarea.setAttribute("class", "menu-header second-header");
+                textarea.appendChild(taContent);
+                document.getElementById('headerContent').appendChild(textarea);
+                for (i = 0; i < firstArray.length; i++){
+                    console.log(firstArray[i]);
+                    var input = document.createElement("INPUT");
+                    input.setAttribute("type", "text");
+                    input.setAttribute("id", "menu-item" +i);
+                    input.setAttribute("class","col-md-11 item-choice second-choice")
+                    input.setAttribute("value", firstArray[i]);
+                    icon = document.createElement("I");
+                    icon.setAttribute("class", "col-md-1 fa fa-arrow-circle-right second-arrow");
+                    icon.setAttribute("id", i);
+                    console.log(icon.id);
+                    getIconId.push(icon.id);
+                    document.getElementById('peritem').appendChild(input);
+                    document.getElementById('peritem').appendChild(icon);
+                    
+                }
+            }
+        })
+    }
+
+    var secondPageChoice = function(){
+        var dataToPass = {
+            "method":"searchTwoField",
+            "data":{
+                "table":"keyword2",
+                "field1":"pagecode",
+                "value1":pageCode,
+                "operator":"AND",
+                "field2":"actualKeyword",
+                "value2": keyWord
+            }
+        }
+        $.ajax({
+            type:"POST",
+            url: apiUrl,
+            contentType: "json",
+            data: JSON.stringify(dataToPass),
+            beforeSend: function(xhr){
+                xhr.setRequestHeader ("Basic", btoa(username + ":" + password));
+                xhr.setRequestHeader ("Action", actionPoint);
+            },
+            success : function(response){
+                thirdData = JSON.parse(response);
+                editThirdContent();
+            },
+            error: function(textStatus,errorThrown){
+                alert('Network connection error, Reload Page')
+                location.reload();
+            },
+            async: false
+        })
+    }
+
+    var editThirdContent = function(){
+        $.each(thirdData, function(key, value){
+            if(key == 'methodResponse'){
+                firstContent = value.queryList[0].content.split('_').join(') ');
+                firstArray = firstContent.split('|');
+                firstPageHeader = value.queryList[0].header;
+                console.log(firstPageHeader);
+                textarea = document.createElement("textarea");
+                taContent = document.createTextNode(firstPageHeader);
+                textarea.setAttribute("type", "text");
+                textarea.setAttribute("class", "menu-header third-header");
+                textarea.appendChild(taContent);
+                document.getElementById('headerContent').appendChild(textarea);
+                for (i = 0; i < firstArray.length; i++){
+                    console.log(firstArray[i]);
+                    var input = document.createElement("INPUT");
+                    input.setAttribute("type", "text");
+                    input.setAttribute("id", "menu-item" +i);
+                    input.setAttribute("class","col-md-11 item-choice choice3")
+                    input.setAttribute("value", firstArray[i]);
+                    icon = document.createElement("I");
+                    icon.setAttribute("class", "col-md-1 fa fa-arrow-circle-right third-arrow");
+                    icon.setAttribute("id", i);
+                    console.log(icon.id);
+                    getIconId.push(icon.id);
+                    document.getElementById('peritem').appendChild(input);
+                    document.getElementById('peritem').appendChild(icon);
+                    
+                }
+            }
+        })
+    };
+
+    
+
+    $('.first-arrow').click(function(){
+        btnIndex =  $('.first-arrow').index(this);
+        console.log(btnIndex);
+        if(btnIndex == 0){
+            btnIndex = 1;
+            console.log(btnIndex);
+            $('.first-choice').hide();
+            $('.first-arrow').hide();
+            $('.first-header').hide();
+            firstChoice();
+            if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
+                console.log('value is back')
+                $("#peritem i:visible:first").hide();
+                $("#peritem i:last").hide();
+            }
+            
+        }
+        else if(btnIndex == 1){
+            btnIndex = 2;
+            console.log(btnIndex);
+            $('.item-choice').hide();
+            $('.first-arrow').hide();
+            $('.first-header').hide();
+            firstChoice();
+            if( $("#peritem input:last").val() == "0) Back"){
+                console.log('value is back')
+                $("#peritem i:last").hide();
+            }
+        }
+        else if(btnIndex ==2){
+            btnIndex = 3;
+            console.log(btnIndex);
+            $('.item-choice').hide();
+            $('.first-arrow').hide();
+            $('.first-header').hide();
+            firstChoice();
+            if( $("#peritem input:last").val() == "0) Back"){
+                console.log('value is back')
+                $("#peritem i:last").hide();
+            }
+        }
+        else if(btnIndex == 3){
+            btnIndex = 4;
+            console.log(btnIndex);
+            $('.item-choice').hide();
+            $('.first-arrow').hide();
+            $('.first-header').hide();
+            firstChoice();
+            if( $("#peritem input:last").val() == "0) Back"){
+                console.log('value is back')
+                $("#peritem i:last").hide();
+            }
+        }
+        else if(btnIndex == 4){
+            btnIndex = 5;
+            console.log(btnIndex);
+            $('.item-choice').hide();
+            $('.first-arrow').hide();
+            $('.first-header').hide();
+            firstChoice();
+            if( $("#peritem input:last").val() == "0) Back"){
+                console.log('value is back')
+                $("#peritem i:last").hide();
+            }
+        }
+        else if(btnIndex == 5){
+            btnIndex = 6;
+            console.log(btnIndex);
+            $('.item-choice').hide();
+            $('.first-arrow').hide();
+            $('.first-header').hide();
+            firstChoice();
+            if( $("#peritem input:last").val() == "0) Back"){
+                console.log('value is back')
+                $("#peritem i:last").hide();
+            }
+        }
+        else if(btnIndex == 6){
+            btnIndex = 7;
+            console.log(btnIndex);
+            $('.item-choice').hide();
+            $('.first-arrow').hide();
+            $('.first-header').hide();
+            firstChoice();
+            if( $("#peritem input:last").val() == "0) Back"){
+                console.log('value is back')
+                $("#peritem i:last").hide();
+            }
+        }
+        else if(btnIndex == 7){
+            btnIndex = 8;
+            console.log(btnIndex);
+            $('.item-choice').hide();
+            $('.first-arrow').hide();
+            $('.first-header').hide();
+            firstChoice();
+            if( $("#peritem input:last").val() == "0) Back"){
+                console.log('value is back')
+                $("#peritem i:last").hide();
+            }
+        }
+        else if(btnIndex == 8){
+            btnIndex = 9;
+            console.log(btnIndex);
+            $('.item-choice').hide();
+            $('.first-arrow').hide();
+            $('.first-header').hide();
+            firstChoice();
+            if( $("#peritem input:last").val() == "0) Back"){
+                console.log('value is back')
+                $("#peritem i:last").hide();
+            }
+        }
+        
+        $(".second-arrow").click(function(){
+            console.log('2nd arrow click')
+            var btnIndex2 = $('.second-arrow').index(this);
+            console.log(btnIndex2);
+            if(btnIndex2 == 0){
+                btnIndex2 = 1;
+                console.log(btnIndex2);
+                keyWord = actualMkeyword+btnIndex2;
+                pageCode = btnIndex2;
+                console.log(keyword);
+                $('.second-choice').hide();
+                $('.second-arrow').hide();
+                $('.second-header').hide();
+                secondPageChoice();
+                if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
+                    console.log('value is back')
+                    $("#peritem i:visible:first").hide();
+                    $("#peritem i:last").hide();
+                }
+                
+            }
+            else if(btnIndex2 == 1){
+                btnIndex2 = 2;
+                console.log(btnIndex2);
+                keyWord = actualMkeyword+btnIndex2;
+                pageCode = btnIndex2;
+                console.log(keyword);
+                $('.second-choice').hide();
+                $('.second-arrow').hide();
+                $('.second-header').hide();
+                secondPageChoice();
+                if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
+                    console.log('value is back')
+                    $("#peritem i:visible:first").hide();
+                    $("#peritem i:last").hide();
+                }
+            }
+            else if(btnIndex2 == 2){
+                btnIndex = 3;
+                console.log(btnIndex2);
+                keyWord = actualMkeyword+btnIndex2;
+                pageCode = btnIndex2;
+                console.log(keyword);
+                $('.second-choice').hide();
+                $('.second-arrow').hide();
+                $('.second-header').hide();
+                secondPageChoice();
+                if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
+                    console.log('value is back')
+                    $("#peritem i:visible:first").hide();
+                    $("#peritem i:last").hide();
+                }
+            }
+        });
+    })
+
+    
+   /* var loopMenuOne = function(){
         var list = document.getElementById("inputContainer");
         $.each(menuOne, function(key, value){
             if(key == 'methodResponse'){
@@ -612,6 +923,40 @@ $(function (){
     }
     getMenuEight();
 
+    var secondPageChoice = function(){
+        var dataToPass = {
+            "method":"searchTwoField",
+            "data":{
+                "table":"keyword2",
+                "field1":"page",
+                "value1":pageNumber,
+                "operator":"AND",
+                "field2":"actualKeyword",
+                "value2": keyWord
+            }
+        }
+        $.ajax({
+            type:"POST",
+            url: apiUrl,
+            contentType: "json",
+            data: JSON.stringify(dataToPass),
+            beforeSend: function(xhr){
+                xhr.setRequestHeader ("Basic", btoa(username + ":" + password));
+                xhr.setRequestHeader ("Action", actionPoint);
+            },
+            success : function(response){
+                gigaData = JSON.parse(response);
+                console.log(gigaData);
+                gigaContent();
+            },
+            error: function(textStatus,errorThrown){
+                alert('Network connection error, Reload Page')
+                location.reload();
+            },
+            async: false
+        })
+    }
+    */
     /*var loopSecondContentOne = function(){
         $.each(allPageTwoData, function(key, value){
             if(key == 'methodResponse'){

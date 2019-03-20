@@ -236,13 +236,15 @@ $(function (){
                 console.log(value.queryList[0].nextpage);
                 pageNumber = value.queryList[0].page;
                 console.log(pageNumber);
+                subscribeVal = value.queryList[0].subscribe;
+                console.log(subscribeVal);
                 gigaHeader = value.queryList[0].header;
                 gigaSplit = value.queryList[0].content.split('_').join(') ');
                 gigaArray = gigaSplit.split('|');
                 for (i = 0; i < gigaArray.length; i ++){
                     gigaPageContent += "<span>" + gigaArray[i] + "<span><br/>";
                     console.log(gigaArray);
-                    getSub = secondArray[0];
+                    getSub = gigaArray[0];
                     console.log(getSub);
                 }
                 document.getElementById("entryPoint").innerHTML = gigaHeader ;
@@ -415,10 +417,9 @@ $(function (){
             }
             
         
-            
-
         }
         else if( pageNumber == 3){
+            
             if (newArrayofPages[newArrayofPages.length-1] === choiceCode){
                 console.log('going to second page')
                 pageNumber = pageNumber - 1;
@@ -467,6 +468,11 @@ $(function (){
                 document.getElementById("entryPoint").innerHTML = thirdPageHeader;
                 keyWord = keyMatch + forNextPage;
                 console.log(keyWord);
+            }
+            else if(  getSub == subscription  && subscribeVal == 1 && choiceCode == 1 ){
+                alert('Thank you for subscribing, Wait for a text confirmation.');
+                clearInput;
+                location.reload();
             }
             else if (newArrayofPages.indexOf(choiceCode) === -1 ){
                 console.log('invalid choice');
