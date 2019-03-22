@@ -29,6 +29,7 @@ var subscription = "1) Subscribe";
 var contentArray =[];
 var subscribeVal;
 var getSub="";
+var B="";
 console.log(subscription);
 
 $(function (){
@@ -58,7 +59,7 @@ $(function (){
                 "method":"select",
                     "data":{
                         "table":"keyword",
-                        "returnID":"0"
+                        "returnID":"121"
                     }
                 }
             $.ajax({

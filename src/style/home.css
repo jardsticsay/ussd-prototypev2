@@ -130,28 +130,86 @@ body{
 }
 
 /* Loading */
-.loader {
-  border: 7px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 7px solid #2dbe60;
-  width: 35px;
-  height: 35px;
-  -webkit-animation: spin 2s linear infinite; /* Safari */
-  animation: spin 2s linear infinite;
-  display:none;
+.lds-spinner {
+  color: official;
+  width: 64px;
+  height: 64px;
   position:absolute;
-  top:15%;
-  left:49%;
+  top:50%;
+  left:45%;
 }
-@-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+.lds-spinner div {
+  transform-origin: 32px 32px;
+  animation: lds-spinner 1.2s linear infinite;
+}
+.lds-spinner div:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 3px;
+  left: 29px;
+  width: 5px;
+  height: 14px;
+  border-radius: 20%;
+  background: #393939;
+}
+.lds-spinner div:nth-child(1) {
+  transform: rotate(0deg);
+  animation-delay: -1.1s;
+}
+.lds-spinner div:nth-child(2) {
+  transform: rotate(30deg);
+  animation-delay: -1s;
+}
+.lds-spinner div:nth-child(3) {
+  transform: rotate(60deg);
+  animation-delay: -0.9s;
+}
+.lds-spinner div:nth-child(4) {
+  transform: rotate(90deg);
+  animation-delay: -0.8s;
+}
+.lds-spinner div:nth-child(5) {
+  transform: rotate(120deg);
+  animation-delay: -0.7s;
+}
+.lds-spinner div:nth-child(6) {
+  transform: rotate(150deg);
+  animation-delay: -0.6s;
+}
+.lds-spinner div:nth-child(7) {
+  transform: rotate(180deg);
+  animation-delay: -0.5s;
+}
+.lds-spinner div:nth-child(8) {
+  transform: rotate(210deg);
+  animation-delay: -0.4s;
+}
+.lds-spinner div:nth-child(9) {
+  transform: rotate(240deg);
+  animation-delay: -0.3s;
+}
+.lds-spinner div:nth-child(10) {
+  transform: rotate(270deg);
+  animation-delay: -0.2s;
+}
+.lds-spinner div:nth-child(11) {
+  transform: rotate(300deg);
+  animation-delay: -0.1s;
+}
+.lds-spinner div:nth-child(12) {
+  transform: rotate(330deg);
+  animation-delay: 0s;
+}
+@keyframes lds-spinner {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
 
 
 /* Dashboard Css Styl */
@@ -231,10 +289,18 @@ i.col-md-1.fa.fa-arrow-circle-right {
   margin-top:2px;
   cursor:pointer;
 }
-.tooltip.right .tooltip-inner {
+.tooltip.top .tooltip-inner {
   background-color:#2dbe60;
 }
-.tooltip.right .tooltip-arrow {
-  border-bottom-color: #2dbe60;
+.tooltip.top .tooltip-arrow {
+  border-bottom-color: #2dbe60 !important;
+  
+} 
+.tooltip-arrow::before {
+  border-bottom-color: #2dbe60!important;
+  
+}
+.tooltip-arrow {
+  border-bottom-color: #2dbe60 !important;
   
 } 
