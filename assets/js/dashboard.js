@@ -34,8 +34,14 @@ var tempContainerTwo="";
 var tempCrackTwo="";
 var tempContainer="";
 var tempCrack="";
-var componentID;
+var componentID="";
+var secondComponentID="";
+var contentID;
+var secondContentID;
+var thirdContentID;
+var firstHeader="";
 var arrayOne={};
+var arrayTwo={};
 var contentEntry;
 
 var gettabval = function(){
@@ -53,7 +59,8 @@ $(function (){
                 if(componentID == undefined){
                     componentID = 0;
                 }
-                console.log(componentID);
+                contentID = componentID.toString();
+                console.log(contentID)
                 firstContent = value.content.split('_').join(') ');
                 firstArray = firstContent.split('|');
                 firstPageHeader = value.header;
@@ -94,7 +101,7 @@ $(function (){
             "method":"select",
                 "data":{
                     "table":"keyword",
-                    "returnID":"0"
+                    "returnID":"121"
                 }
         }
         $.ajax({
@@ -144,9 +151,7 @@ $(function (){
             },
             success : function(response){
                 secondContent = JSON.parse(response);
-                $('.lds-spinner').show();
                 editSecondContent();
-                $('.lds-spinner').hide();
             },
             error: function(textStatus,errorThrown){
                 alert('Network connection error, Reload page');
@@ -159,12 +164,14 @@ $(function (){
     var editSecondContent = function(){
         $.each(secondContent, function(key, value){
             if(key == 'methodResponse'){
-                
                 firstContent = value.content.split('_').join(') ');
                 firstArray = firstContent.split('|');
                 firstPageHeader = value.header;
                 console.log(firstPageHeader);
                 actualMkeyword = value.actualkeyword;
+                secondComponentID = value.returnID;
+                secondContentID = secondComponentID.toString();
+                console.log(secondContentID);
                 document.getElementById("menuContent").innerHTML = actualMkeyword;
                 textarea = document.createElement("textarea");
                 taContent = document.createTextNode(firstPageHeader);
@@ -232,10 +239,12 @@ $(function (){
     var editThirdContent = function(){
         $.each(thirdData, function(key, value){
             if(key == 'methodResponse'){
+                console.log(value)
                 firstContent = value.queryList[0].content.split('_').join(') ');
                 firstArray = firstContent.split('|');
                 firstPageHeader = value.queryList[0].header;
-                console.log(firstPageHeader);
+                thirdContentID = value.queryList[0].id;
+                console.log(thirdContentID);
                 textarea = document.createElement("textarea");
                 taContent = document.createTextNode(firstPageHeader);
                 textarea.setAttribute("type", "text");
@@ -402,29 +411,46 @@ $(function (){
         })
     };
 
+    
+    
+    var convertFirstInput = function(){
+        firstHeader = $("textarea:visible").val();
+        console.log(firstHeader);
+        arrayOne = $("input:visible[type='text']").map(function() {
+            return this.value;
+        }).get();
+        console.log(arrayOne);
+        arrayFirst = arrayOne.join('|');
+        arrayFirstResult = arrayFirst.split(') ').join('_');
+        contentResult = arrayFirstResult;
+        console.log(contentResult);
+    }
+    console.log(firstHeader);
+
     var updateFirstMenu = function(){
         var dataToPass = {
             "method":"update",
-                "data":{
-                    "table":"keyword",
-                    "returnID":componentID,
-                    "fieldName":"mainkeyword",
-                    "header":firstHeader,
-                    "content":contentContainer
-                }
+            "data":{
+                "table":"keyword",
+                "returnID":contentID,
+                "fieldName":"id",
+                "header":firstHeader,
+                "content":contentResult
+            }
         }
         $.ajax({
             type:"POST",
             url: apiUrl,
             contentType: "json",
             data : JSON.stringify(dataToPass),
-            beforesend: function(xhr){
+            beforeSend: function(xhr){
                 xhr.setRequestHeader ("Basic", btoa(username + ":" + password));
                 xhr.setRequestHeader ("Action", actionPoint);
             },
             success: function(response){
-                firstUpdate = JSON.parse(response);
-                console.log(firstUpdate);
+                parseOne = JSON.parse(response);
+                console.log(parseOne);
+                alert('Successfully updated!')
             },
             error: function(textStatus){
                 alert('Network connection error');
@@ -434,15 +460,100 @@ $(function (){
     }
 
     var convertInputResults = function(){
-        arrayOne = $("input:visible[type='text']").map(function() {
+        secondHeaderMenu = $("textarea:visible").val();
+        console.log(secondHeaderMenu);
+        arrayTwo = $("input:visible[type='text']").map(function() {
             return this.value;
         }).get();
-        console.log(arrayOne);
-        arrayFirst = arrayOne.join();
-        arrayFirstResult = arrayFirst.split(') ').join('_');
-        arrayFirstResultFinal = arrayFirstResult.split(',').join('|');
-        console.log(arrayFirstResultFinal);
+        console.log(arrayTwo);
+        arraySecond = arrayTwo.join('|');
+        arraySecondResult = arraySecond.split(') ').join('_');
+        secondContentResult = arraySecondResult;
+        console.log(secondContentResult);
     }
+
+    var updateSecondMenu = function(){
+        var dataToPass = {
+            "method":"update",
+                "data":{
+                    "table":"keyword",
+                    "returnID":secondContentID,
+                    "fieldName":"id",
+                    "header":secondHeaderMenu,
+                    "content":secondContentResult
+                }
+        }
+        $.ajax({
+            type:"POST",
+            url: apiUrl,
+            contentType: "json",
+            data : JSON.stringify(dataToPass),
+            cache:false,
+            beforeSend: function(xhr){
+                xhr.setRequestHeader ("Basic", btoa(username + ":" + password));
+                xhr.setRequestHeader ("Action", actionPoint);
+            },
+            success: function(response){
+                parseTwo = JSON.parse(response);
+                console.log(parseTwo);
+                alert('Successfully updated!')
+            },
+            error: function(textStatus){
+                alert('Network connection error');
+                location.reload();
+            }
+        })
+    }
+
+    var convertThirdInputResults = function(){
+        thirdHeaderMenu = $("textarea:visible").val();
+        console.log(thirdHeaderMenu);
+        arrayTwo = $("input:visible[type='text']").map(function() {
+            return this.value;
+        }).get();
+        console.log(arrayTwo);
+        arraySecond = arrayTwo.join('|');
+        arraySecondResult = arraySecond.split(') ').join('_');
+        thirdContentResult = arraySecondResult;
+        console.log(thirdContentResult);
+    }
+
+    var updateThirdMenu = function(){
+        var dataToPass = {
+            "method":"update",
+                "data":{
+                    "table":"keyword2",
+                    "returnID":thirdContentID,
+                    "fieldName":"id",
+                    "header":thirdHeaderMenu,
+                    "content":thirdContentResult
+                }
+        }
+        $.ajax({
+            type:"POST",
+            url: apiUrl,
+            contentType: "json",
+            data : JSON.stringify(dataToPass),
+            cache:false,
+            beforeSend: function(xhr){
+                xhr.setRequestHeader ("Basic", btoa(username + ":" + password));
+                xhr.setRequestHeader ("Action", actionPoint);
+            },
+            success: function(response){
+                parseThree = JSON.parse(response);
+                console.log(parseThree);
+                alert('Successfully updated!')
+            },
+            error: function(textStatus){
+                alert('Network connection error');
+                location.reload();
+            }
+        })
+    }
+
+    
+
+
     
 
     var hideFirst = function (){
@@ -464,6 +575,11 @@ $(function (){
         $('.fourth-choice').hide();
         $('.fourth-arrow').hide();
         $('.fourth-header').hide();     
+    }
+    var hideFifth = function(){
+        $('.fifth-choice').hide();
+        $('.fifth-arrow').hide();
+        $('.fifth-header').hide();     
     }
     var showFirst = function(){
         $('.first-choice').show();
@@ -487,29 +603,49 @@ $(function (){
     }
     
     var addSecondClass = function(){
+        $('#prev-content').show();
         $('#prev-content').addClass('secondLevel');
         $('#prev-content').removeClass('firstLevel');
+        $('#save-button').addClass('second-button');
+        $('#save-button').removeClass('first-button');
     }
     var addThirdClass = function (){
         $('#prev-content').addClass('thirdLevel');
-        $('#prev-content').removeClass('secondLevel')
+        $('#prev-content').removeClass('secondLevel');
+        $('#save-button').addClass('third-button');
+        $('#save-button').removeClass('second-button');
     }
     var addFourthClass = function (){
         $('#prev-content').addClass('fourthLevel');
-        $('#prev-content').removeClass('thirdLevel')
+        $('#prev-content').removeClass('thirdLevel');
+        $('#save-button').addClass('fourth-button');
+        $('#save-button').removeClass('third-button');
     }
 
     var removeSecondClass = function(){
         $('#prev-content').addClass('firstLevel');
         $('#prev-content').removeClass('secondLevel');
+        $('#prev-content').addClass('first-button');
+        $('#prev-content').removeClass('second-button');
     }
     var removeThirdClass = function(){
         $('#prev-content').addClass('secondLevel');
         $('#prev-content').removeClass('thirdLevel');
+        $('#prev-content').addClass('second-button');
+        $('#prev-content').removeClass('third-button');
+        
     }
     var removeFourthClass = function(){
         $('#prev-content').addClass('thirdLevel');
         $('#prev-content').removeClass('fourthLevel');
+        $('#prev-content').addClass('third-button');
+        $('#prev-content').removeClass('fourth-button');
+    }
+    var removeFifthClass = function(){
+        $('#prev-content').addClass('thirdLevel');
+        $('#prev-content').removeClass('fourthLevel');
+        $('#prev-content').addClass('third-button');
+        $('#prev-content').removeClass('fourth-button');
     }
 
     var removeArrow = function(){
@@ -627,7 +763,8 @@ $(function (){
                 removeBack();
             }
         }
-        
+        onChangeBtn();
+        convertInputResults();
         $(".second-arrow").click(function(){
             console.log('2nd arrow click')
             var btnIndex2 = $('.second-arrow').index(this);
@@ -750,7 +887,8 @@ $(function (){
                     removeArrow();
                 }
             }
-
+            onChangeBtn();
+            convertThirdInputResults();
             $(".third-arrow").click(function(){
                 console.log('3rd arrow click')
                 var btnIndex3 = $('.third-arrow').index(this);
@@ -760,7 +898,7 @@ $(function (){
                     console.log(btnIndex3);
                     keyWord3 = keyWord+btnIndex3;
                     pageCode3 = btnIndex3;
-                    console.log(keyword);
+                    console.log(keyword3);
                     hideThird();
                     addFourthClass();
                     thirdPageChoice();
@@ -774,7 +912,7 @@ $(function (){
                     console.log(btnIndex3);
                     keyWord3 = keyWord+btnIndex3;
                     pageCode3 = btnIndex3;
-                    console.log(keyword);
+                    console.log(keyWord3);
                     hideThird();
                     addFourthClass();
                     thirdPageChoice();
@@ -787,7 +925,7 @@ $(function (){
                     console.log(btnIndex3);
                     keyWord3 = keyWord+btnIndex3;
                     pageCode3 = btnIndex3;
-                    console.log(keyword);
+                    console.log(keyWord3);
                     hideThird();
                     addFourthClass();
                     thirdPageChoice();
@@ -800,7 +938,7 @@ $(function (){
                     console.log(btnIndex3);
                     keyWord3 = keyWord+btnIndex3;
                     pageCode3 = btnIndex3;
-                    console.log(keyword);
+                    console.log(keyWord3);
                     hideThird();
                     addFourthClass();
                     thirdPageChoice();
@@ -813,7 +951,6 @@ $(function (){
                     console.log(btnIndex3);
                     keyWord3 = keyWord+btnIndex3;
                     pageCode3 = btnIndex3;
-                    console.log(keyword);
                     hideThird();
                     addFourthClass();
                     thirdPageChoice();
@@ -826,7 +963,6 @@ $(function (){
                     console.log(btnIndex3);
                     keyWord3 = keyWord+btnIndex3;
                     pageCode3 = btnIndex3;
-                    console.log(keyword);
                     hideThird();
                     addFourthClass();
                     thirdPageChoice();
@@ -839,7 +975,6 @@ $(function (){
                     console.log(btnIndex3);
                     keyWord3 = keyWord+btnIndex3;
                     pageCode3 = btnIndex3;
-                    console.log(keyword);
                     hideThird();
                     addFourthClass();
                     thirdPageChoice();
@@ -852,7 +987,6 @@ $(function (){
                     console.log(btnIndex3);
                     keyWord3 = keyWord+btnIndex3;
                     pageCode3 = btnIndex3;
-                    console.log(keyword);
                     hideThird();
                     addFourthClass();
                     thirdPageChoice();
@@ -860,12 +994,11 @@ $(function (){
                         removeArrow();
                     }
                 }
-                else if(btnIndex2 == 8){
+                else if(btnIndex3 == 8){
                     btnIndex3 = btnIndex3 + 1;
                     console.log(btnIndex3);
                     keyWord3 = keyWord+btnIndex3;
                     pageCode3 = btnIndex3;
-                    console.log(keyword);
                     hideThird();
                     addFourthClass();
                     thirdPageChoice();
@@ -873,6 +1006,128 @@ $(function (){
                         removeArrow();
                     }
                 }
+                onChangeBtn();
+                
+            });
+            $(".fourth-arrow").click(function(){
+                console.log('4th arrow click')
+                var btnIndex4 = $('.fourth-arrow').index(this);
+                console.log(btnIndex4);
+                if(btnIndex4 == 0){
+                    btnIndex4 = btnIndex4 + 1;
+                    console.log(btnIndex4);
+                    keyWord4 = keyWord3+btnIndex4;
+                    pageCode4 = btnIndex4;
+                    console.log(keyword4);
+                    hideFourth();
+                    addFifthClass();
+                    fourthPageChoice();
+                    if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
+                        removeArrow();
+                    }
+                    
+                }
+                else if(btnIndex3 == 1){
+                    btnIndex3 = btnIndex3 + 1;
+                    console.log(btnIndex3);
+                    keyWord3 = keyWord+btnIndex3;
+                    pageCode3 = btnIndex3;
+                    console.log(keyWord3);
+                    hideThird();
+                    addFourthClass();
+                    thirdPageChoice();
+                    if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
+                        removeArrow();
+                    }
+                }
+                else if(btnIndex3 == 2){
+                    btnIndex3 = btnIndex3 + 1;
+                    console.log(btnIndex3);
+                    keyWord3 = keyWord+btnIndex3;
+                    pageCode3 = btnIndex3;
+                    console.log(keyWord3);
+                    hideThird();
+                    addFourthClass();
+                    thirdPageChoice();
+                    if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
+                        removeArrow();
+                    }
+                }
+                else if(btnIndex3 == 3){
+                    btnIndex3 = btnIndex3 + 1;
+                    console.log(btnIndex3);
+                    keyWord3 = keyWord+btnIndex3;
+                    pageCode3 = btnIndex3;
+                    console.log(keyWord3);
+                    hideThird();
+                    addFourthClass();
+                    thirdPageChoice();
+                    if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
+                        removeArrow();
+                    }
+                }
+                else if(btnIndex3 == 4){
+                    btnIndex3 = btnIndex3 + 1;
+                    console.log(btnIndex3);
+                    keyWord3 = keyWord+btnIndex3;
+                    pageCode3 = btnIndex3;
+                    hideThird();
+                    addFourthClass();
+                    thirdPageChoice();
+                    if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
+                        removeArrow();
+                    }
+                }
+                else if(btnIndex3 == 5){
+                    btnIndex3 = btnIndex3 + 1;
+                    console.log(btnIndex3);
+                    keyWord3 = keyWord+btnIndex3;
+                    pageCode3 = btnIndex3;
+                    hideThird();
+                    addFourthClass();
+                    thirdPageChoice();
+                    if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
+                        removeArrow();
+                    }
+                }
+                else if(btnIndex3 == 6){
+                    btnIndex3 = btnIndex3 + 1;
+                    console.log(btnIndex3);
+                    keyWord3 = keyWord+btnIndex3;
+                    pageCode3 = btnIndex3;
+                    hideThird();
+                    addFourthClass();
+                    thirdPageChoice();
+                    if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
+                        removeArrow();
+                    }
+                }
+                else if(btnIndex3 == 7){
+                    btnIndex3 = btnIndex3 + 1;
+                    console.log(btnIndex3);
+                    keyWord3 = keyWord+btnIndex3;
+                    pageCode3 = btnIndex3;
+                    hideThird();
+                    addFourthClass();
+                    thirdPageChoice();
+                    if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
+                        removeArrow();
+                    }
+                }
+                else if(btnIndex3 == 8){
+                    btnIndex3 = btnIndex3 + 1;
+                    console.log(btnIndex3);
+                    keyWord3 = keyWord+btnIndex3;
+                    pageCode3 = btnIndex3;
+                    hideThird();
+                    addFourthClass();
+                    thirdPageChoice();
+                    if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
+                        removeArrow();
+                    }
+                }
+                onChangeBtn();
+                
             });
 
 
@@ -894,35 +1149,67 @@ $(function (){
         else if($('#prev-content').hasClass('fourthLevel')){
             hideFourth();
             showThird();
-            removeThirdClass();
+            removeFourthClass();
+        }
+        else if($('#prev-content').hasClass('fifthLevel')){
+            hideFifth();
+            showFourth();
+            removeFifthClass();
         }
     })
 
-    $('input:text').keypress(function(e){
-        enableSaveBtn();
-    });
-    $('input:visible:text').keyup(function(e) {
-        if (e.keyCode == 8 || e.keyCode == 46) {
+    var onChangeBtn = function(){
+        $('input:visible').keypress(function(e){
             enableSaveBtn();
-        } else {
-            e.preventDefault();
+        });
+        $('input:visible').keyup(function(e) {
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                enableSaveBtn();
+            } else {
+                e.preventDefault();
+            }
+        });
+        
+        $('input:visible').bind('paste', function(e) { 
+            enableSaveBtn();
+        });
+        $('textarea:visible').keypress(function(e){
+            enableSaveBtn();
+        });
+        $('textarea:visible').keyup(function(e) {
+            if (e.keyCode == 8 || e.keyCode == 46) {
+                enableSaveBtn();
+            } else {
+                e.preventDefault();
+            }
+        });
+        $('textarea:visible').bind('paste', function(e) { 
+            enableSaveBtn();
+        });
+        var enableSaveBtn = function(){
+            $('.save').prop('disabled',false);
         }
-    });
-    
-    $('input:visible:text').bind('paste', function(e) { 
-        enableSaveBtn();
-    });
-
-
-    var enableSaveBtn = function(){
-        $('.save').prop('disabled',false);
+        var disableSaveBtn = function(){
+            $('.save').prop('disabled',true);
+        }
     }
-    var disableSaveBtn = function(){
-        $('.save').prop('disabled',true);
-    } 
 
-    $('.save').click(function(){
-        convertInputResults();
+    onChangeBtn();
+     
+
+    $('#save-button').click(function(){
+        if($('#save-button').hasClass('first-button')){
+            convertFirstInput();
+            updateFirstMenu();
+        }
+        else if($('#save-button').hasClass('second-button')){
+            convertInputResults();
+            updateSecondMenu();
+        }
+        else if($('#save-button').hasClass('third-button')){
+            convertThirdInputResults();
+            updateThirdMenu();
+        }
     });
 
 })
