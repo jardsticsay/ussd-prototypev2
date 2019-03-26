@@ -42,7 +42,8 @@ var thirdContentID;
 var firstHeader="";
 var arrayOne={};
 var arrayTwo={};
-var contentEntry;
+var contentTitle;
+
 
 var gettabval = function(){
     var test = document.getElementById("thirdTab");
@@ -52,6 +53,13 @@ var gettabval = function(){
 
 $(function (){
     $('body').tooltip({ selector: '[data-toggle="tooltip"]' });
+
+    mainmenu = document.createElement("span");
+    mainmenutext = document.createTextNode("Main Menu");
+    mainmenu.setAttribute("class","bread");
+    mainmenu.appendChild(mainmenutext);
+    document.getElementById('breadcrumb-entry').appendChild(mainmenu);
+
     var loopFirstContent = function(){
         $.each(parseJson, function(key, value){
             if(key == 'methodResponse'){
@@ -167,12 +175,22 @@ $(function (){
                 firstContent = value.content.split('_').join(') ');
                 firstArray = firstContent.split('|');
                 firstPageHeader = value.header;
+                contentTitle = value.actualkeyword;
                 console.log(firstPageHeader);
                 actualMkeyword = value.actualkeyword;
                 secondComponentID = value.returnID;
                 secondContentID = secondComponentID.toString();
                 console.log(secondContentID);
-                document.getElementById("menuContent").innerHTML = actualMkeyword;
+                var h4keyword = document.createElement("h4");
+                var keywordMatch = document.createTextNode("Promo Keyword");
+                h4keyword.setAttribute("class", "keyword-main");
+                h4keyword.appendChild(keywordMatch);
+                document.getElementById('textKeyword').appendChild(h4keyword);
+                var inputKeyword = document.createElement("input");
+                inputKeyword.setAttribute("type","text");
+                inputKeyword.setAttribute("class","keyword");
+                inputKeyword.setAttribute("value", actualMkeyword);
+                document.getElementById("keyword").appendChild(inputKeyword);
                 textarea = document.createElement("textarea");
                 taContent = document.createTextNode(firstPageHeader);
                 textarea.setAttribute("type", "text");
@@ -244,6 +262,7 @@ $(function (){
                 firstArray = firstContent.split('|');
                 firstPageHeader = value.queryList[0].header;
                 thirdContentID = value.queryList[0].id;
+                thirdContentTitle = value.queryList[0].actualkeyword;
                 console.log(thirdContentID);
                 textarea = document.createElement("textarea");
                 taContent = document.createTextNode(firstPageHeader);
@@ -314,6 +333,7 @@ $(function (){
                 firstContent = value.queryList[0].content.split('_').join(') ');
                 firstArray = firstContent.split('|');
                 firstPageHeader = value.queryList[0].header;
+                fourthContentTitle = value.queryList[0].actualkeyword;
                 textarea = document.createElement("textarea");
                 taContent = document.createTextNode(firstPageHeader);
                 textarea.setAttribute("type", "text");
@@ -496,7 +516,7 @@ $(function (){
             success: function(response){
                 parseTwo = JSON.parse(response);
                 console.log(parseTwo);
-                alert('Successfully updated!')
+                alert('Successfully updated!');
             },
             error: function(textStatus){
                 alert('Network connection error');
@@ -542,7 +562,7 @@ $(function (){
             success: function(response){
                 parseThree = JSON.parse(response);
                 console.log(parseThree);
-                alert('Successfully updated!')
+                alert('Successfully updated!');
             },
             error: function(textStatus){
                 alert('Network connection error');
@@ -657,6 +677,12 @@ $(function (){
         $("#peritem i:last").hide();
     }
 
+    var checkInput = function(){
+        $("input:visible").filter(function () {
+            return $.trim($(this).val()).length == 0
+        }).length == 0;
+    }
+
     $('.first-arrow').click(function(){
         if($( '.lds-spinner' ).is(":hidden")){
             $( '.lds-spinner' ).show();
@@ -670,6 +696,11 @@ $(function (){
             addSecondClass();
             firstChoice();
             $('.lds-spinner').delay(5000).hide();
+            breadcrumb = document.createElement("span");
+            breadcrumb.setAttribute("class","bread2");
+            bread1 = document.createTextNode( ' | ' + contentTitle);
+            breadcrumb.appendChild(bread1);
+            document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
             if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                 removeArrow();
             }
@@ -681,6 +712,11 @@ $(function (){
             hideFirst();
             addSecondClass();
             firstChoice();
+            breadcrumb = document.createElement("span");
+            breadcrumb.setAttribute("class","bread2");
+            bread1 = document.createTextNode( ' | ' + contentTitle);
+            breadcrumb.appendChild(bread1)
+            document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
             $('.lds-spinner').delay(2000).hide();
             if( $("#peritem input:last").val() == "0) Back"){
                 removeBack();
@@ -692,6 +728,11 @@ $(function (){
             hideFirst();
             addSecondClass();
             firstChoice();
+            breadcrumb = document.createElement("span");
+            breadcrumb.setAttribute("class","bread2");
+            bread1 = document.createTextNode( ' | ' + contentTitle);
+            breadcrumb.appendChild(bread1)
+            document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
             $('.lds-spinner').hide();
             if( $("#peritem input:last").val() == "0) Back"){
                 removeBack();
@@ -703,6 +744,11 @@ $(function (){
             hideFirst();
             addSecondClass();
             firstChoice();
+            breadcrumb = document.createElement("span");
+            breadcrumb.setAttribute("class","bread2");
+            bread1 = document.createTextNode( ' | ' + contentTitle);
+            breadcrumb.appendChild(bread1)
+            document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
             $('.lds-spinner').hide();
             if( $("#peritem input:last").val() == "0) Back"){
                 removeBack();
@@ -714,6 +760,11 @@ $(function (){
             hideFirst();
             addSecondClass();
             firstChoice();
+            breadcrumb = document.createElement("span");
+            breadcrumb.setAttribute("class","bread2");
+            bread1 = document.createTextNode( ' | ' + contentTitle);
+            breadcrumb.appendChild(bread1);
+            document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
             $('.lds-spinner').hide();
             if( $("#peritem input:last").val() == "0) Back"){
                 removeBack();;
@@ -725,6 +776,11 @@ $(function (){
             hideFirst();
             addSecondClass();
             firstChoice();
+            breadcrumb = document.createElement("span");
+            breadcrumb.setAttribute("class","bread2");
+            bread1 = document.createTextNode( ' | ' + contentTitle);
+            breadcrumb.appendChild(bread1);
+            document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
             $('.lds-spinner').hide();
             if( $("#peritem input:last").val() == "0) Back"){
                 removeBack();
@@ -736,6 +792,11 @@ $(function (){
             hideFirst();
             addSecondClass();
             firstChoice();
+            breadcrumb = document.createElement("span");
+            breadcrumb.setAttribute("class","bread2");
+            bread1 = document.createTextNode( ' | ' + contentTitle);
+            breadcrumb.appendChild(bread1);
+            document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
             $('.lds-spinner').hide();
             if( $("#peritem input:last").val() == "0) Back"){
                 removeBack();
@@ -747,6 +808,11 @@ $(function (){
             hideFirst();
             addSecondClass();
             firstChoice();
+            breadcrumb = document.createElement("span");
+            breadcrumb.setAttribute("class","bread2");
+            bread1 = document.createTextNode( ' | ' + contentTitle);
+            breadcrumb.appendChild(bread1);
+            document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
             $('.lds-spinner').hide();
             if( $("#peritem input:last").val() == "0) Back"){
                 removeBack();
@@ -758,6 +824,11 @@ $(function (){
             hideFirst();
             addSecondClass();
             firstChoice();
+            breadcrumb = document.createElement("span");
+            breadcrumb.setAttribute("class","bread2");
+            bread1 = document.createTextNode( ' | ' + contentTitle);
+            breadcrumb.appendChild(bread1);
+            document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
             $('.lds-spinner').hide();
             if( $("#peritem input:last").val() == "0) Back"){
                 removeBack();
@@ -778,6 +849,11 @@ $(function (){
                 hideSecond();
                 addThirdClass();
                 secondPageChoice();
+                breadcrumb = document.createElement("span");
+                breadcrumb.setAttribute("class","bread3");
+                bread1 = document.createTextNode( ' | ' + thirdContentTitle);
+                breadcrumb.appendChild(bread1);
+                document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                 if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                     removeArrow();
                 }
@@ -792,6 +868,11 @@ $(function (){
                 hideSecond();
                 addThirdClass();
                 secondPageChoice();
+                breadcrumb = document.createElement("span");
+                breadcrumb.setAttribute("class","bread3");
+                bread1 = document.createTextNode( ' | ' + thirdContentTitle);
+                breadcrumb.appendChild(bread1);
+                document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                 if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                     removeArrow();
                 }
@@ -805,6 +886,11 @@ $(function (){
                 hideSecond();
                 addThirdClass();
                 secondPageChoice();
+                breadcrumb = document.createElement("span");
+                breadcrumb.setAttribute("class","bread3");
+                bread1 = document.createTextNode( ' | ' + thirdContentTitle);
+                breadcrumb.appendChild(bread1);
+                document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                 if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                     removeArrow();
                 }
@@ -818,6 +904,11 @@ $(function (){
                 hideSecond();
                 addThirdClass();
                 secondPageChoice();
+                breadcrumb = document.createElement("span");
+                breadcrumb.setAttribute("class","bread3");
+                bread1 = document.createTextNode( ' | ' + thirdContentTitle);
+                breadcrumb.appendChild(bread1);
+                document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                 if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                     removeArrow();
                 }
@@ -831,6 +922,11 @@ $(function (){
                 hideSecond();
                 addThirdClass();
                 secondPageChoice();
+                breadcrumb = document.createElement("span");
+                breadcrumb.setAttribute("class","bread3");
+                bread1 = document.createTextNode( ' | ' + thirdContentTitle);
+                breadcrumb.appendChild(bread1);
+                document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                 if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                     removeArrow();
                 }
@@ -844,6 +940,11 @@ $(function (){
                 hideSecond();
                 addThirdClass();
                 secondPageChoice();
+                breadcrumb = document.createElement("span");
+                breadcrumb.setAttribute("class","bread3");
+                bread1 = document.createTextNode( ' | ' + thirdContentTitle);
+                breadcrumb.appendChild(bread1);
+                document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                 if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                     removeArrow();
                 }
@@ -857,6 +958,11 @@ $(function (){
                 hideSecond();
                 addThirdClass();
                 secondPageChoice();
+                breadcrumb = document.createElement("span");
+                breadcrumb.setAttribute("class","bread3");
+                bread1 = document.createTextNode( ' | ' + thirdContentTitle);
+                breadcrumb.appendChild(bread1);
+                document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                 if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                     removeArrow();
                 }
@@ -870,6 +976,11 @@ $(function (){
                 hideSecond();
                 addThirdClass();
                 secondPageChoice();
+                breadcrumb = document.createElement("span");
+                breadcrumb.setAttribute("class","bread3");
+                bread1 = document.createTextNode( ' | ' + thirdContentTitle);
+                breadcrumb.appendChild(bread1);
+                document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                 if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                     removeArrow();
                 }
@@ -883,6 +994,11 @@ $(function (){
                 hideSecond();
                 addThirdClass();
                 secondPageChoice();
+                breadcrumb = document.createElement("span");
+                breadcrumb.setAttribute("class","bread3");
+                bread1 = document.createTextNode( ' | ' + thirdContentTitle);
+                breadcrumb.appendChild(bread1);
+                document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                 if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                     removeArrow();
                 }
@@ -902,6 +1018,11 @@ $(function (){
                     hideThird();
                     addFourthClass();
                     thirdPageChoice();
+                    breadcrumb = document.createElement("span");
+                    breadcrumb.setAttribute("class","bread4");
+                    bread1 = document.createTextNode( ' | ' + fourthContentTitle);
+                    breadcrumb.appendChild(bread1);
+                    document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                     if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                         removeArrow();
                     }
@@ -916,6 +1037,11 @@ $(function (){
                     hideThird();
                     addFourthClass();
                     thirdPageChoice();
+                    breadcrumb = document.createElement("span");
+                    breadcrumb.setAttribute("class","bread4");
+                    bread1 = document.createTextNode( ' | ' + fourthContentTitle);
+                    breadcrumb.appendChild(bread1);
+                    document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                     if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                         removeArrow();
                     }
@@ -929,6 +1055,11 @@ $(function (){
                     hideThird();
                     addFourthClass();
                     thirdPageChoice();
+                    breadcrumb = document.createElement("span");
+                    breadcrumb.setAttribute("class","bread4");
+                    bread1 = document.createTextNode( ' | ' + fourthContentTitle);
+                    breadcrumb.appendChild(bread1);
+                    document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                     if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                         removeArrow();
                     }
@@ -942,6 +1073,11 @@ $(function (){
                     hideThird();
                     addFourthClass();
                     thirdPageChoice();
+                    breadcrumb = document.createElement("span");
+                    breadcrumb.setAttribute("class","bread4");
+                    bread1 = document.createTextNode( ' | ' + fourthContentTitle);
+                    breadcrumb.appendChild(bread1);
+                    document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                     if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                         removeArrow();
                     }
@@ -954,6 +1090,11 @@ $(function (){
                     hideThird();
                     addFourthClass();
                     thirdPageChoice();
+                    breadcrumb = document.createElement("span");
+                    breadcrumb.setAttribute("class","bread4");
+                    bread1 = document.createTextNode( ' | ' + fourthContentTitle);
+                    breadcrumb.appendChild(bread1);
+                    document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                     if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                         removeArrow();
                     }
@@ -966,6 +1107,11 @@ $(function (){
                     hideThird();
                     addFourthClass();
                     thirdPageChoice();
+                    breadcrumb = document.createElement("span");
+                    breadcrumb.setAttribute("class","bread4");
+                    bread1 = document.createTextNode( ' | ' + fourthContentTitle);
+                    breadcrumb.appendChild(bread1);
+                    document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                     if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                         removeArrow();
                     }
@@ -978,6 +1124,11 @@ $(function (){
                     hideThird();
                     addFourthClass();
                     thirdPageChoice();
+                    breadcrumb = document.createElement("span");
+                    breadcrumb.setAttribute("class","bread4");
+                    bread1 = document.createTextNode( ' | ' + fourthContentTitle);
+                    breadcrumb.appendChild(bread1);
+                    document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                     if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                         removeArrow();
                     }
@@ -990,6 +1141,11 @@ $(function (){
                     hideThird();
                     addFourthClass();
                     thirdPageChoice();
+                    breadcrumb = document.createElement("span");
+                    breadcrumb.setAttribute("class","bread4");
+                    bread1 = document.createTextNode( ' | ' + fourthContentTitle);
+                    breadcrumb.appendChild(bread1);
+                    document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                     if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                         removeArrow();
                     }
@@ -1002,6 +1158,11 @@ $(function (){
                     hideThird();
                     addFourthClass();
                     thirdPageChoice();
+                    breadcrumb = document.createElement("span");
+                    breadcrumb.setAttribute("class","bread4");
+                    bread1 = document.createTextNode( ' | ' + fourthContentTitle);
+                    breadcrumb.appendChild(bread1);
+                    document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                     if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                         removeArrow();
                     }
@@ -1022,106 +1183,156 @@ $(function (){
                     hideFourth();
                     addFifthClass();
                     fourthPageChoice();
+                    breadcrumb = document.createElement("span");
+                    breadcrumb.setAttribute("class","bread5");
+                    bread1 = document.createTextNode( ' | ' + thirdContentTitle);
+                    breadcrumb.appendChild(bread1);
+                    document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                     if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                         removeArrow();
                     }
                     
                 }
-                else if(btnIndex3 == 1){
-                    btnIndex3 = btnIndex3 + 1;
-                    console.log(btnIndex3);
-                    keyWord3 = keyWord+btnIndex3;
-                    pageCode3 = btnIndex3;
-                    console.log(keyWord3);
-                    hideThird();
-                    addFourthClass();
-                    thirdPageChoice();
+                else if(btnIndex4 == 1){
+                    btnIndex4 = btnIndex4 + 1;
+                    console.log(btnIndex4);
+                    keyword4 = keyWord3+btnIndex4;
+                    pageCode4 = btnIndex4;
+                    console.log(keyWord4);
+                    hideFourth();
+                    addFifthClass();
+                    fourthPageChoice();
+                    breadcrumb = document.createElement("span");
+                    breadcrumb.setAttribute("class","bread5");
+                    bread1 = document.createTextNode( ' | ' + thirdContentTitle);
+                    breadcrumb.appendChild(bread1);
+                    document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                     if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                         removeArrow();
                     }
                 }
-                else if(btnIndex3 == 2){
-                    btnIndex3 = btnIndex3 + 1;
-                    console.log(btnIndex3);
-                    keyWord3 = keyWord+btnIndex3;
-                    pageCode3 = btnIndex3;
-                    console.log(keyWord3);
-                    hideThird();
-                    addFourthClass();
-                    thirdPageChoice();
+                else if(btnIndex4 == 2){
+                    btnIndex4 = btnIndex4 + 1;
+                    console.log(btnIndex4);
+                    keyword4 = keyWord3+btnIndex4;
+                    pageCode4 = btnIndex4;
+                    console.log(keyWord4);
+                    hideFourth();
+                    addFifthClass();
+                    fourthPageChoice();
+                    breadcrumb = document.createElement("span");
+                    breadcrumb.setAttribute("class","bread5");
+                    bread1 = document.createTextNode( ' | ' + thirdContentTitle);
+                    breadcrumb.appendChild(bread1);
+                    document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                     if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                         removeArrow();
                     }
                 }
-                else if(btnIndex3 == 3){
-                    btnIndex3 = btnIndex3 + 1;
-                    console.log(btnIndex3);
-                    keyWord3 = keyWord+btnIndex3;
-                    pageCode3 = btnIndex3;
-                    console.log(keyWord3);
-                    hideThird();
-                    addFourthClass();
-                    thirdPageChoice();
+                else if(btnIndex4 == 3){
+                    btnIndex4 = btnIndex4 + 1;
+                    console.log(btnIndex4);
+                    keyword4 = keyWord3+btnIndex4;
+                    pageCode4 = btnIndex4;
+                    console.log(keyWord4);
+                    hideFourth();
+                    addFifthClass();
+                    fourthPageChoice();
+                    breadcrumb = document.createElement("span");
+                    breadcrumb.setAttribute("class","bread5");
+                    bread1 = document.createTextNode( ' | ' + thirdContentTitle);
+                    breadcrumb.appendChild(bread1);
+                    document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                     if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                         removeArrow();
                     }
                 }
-                else if(btnIndex3 == 4){
-                    btnIndex3 = btnIndex3 + 1;
-                    console.log(btnIndex3);
-                    keyWord3 = keyWord+btnIndex3;
-                    pageCode3 = btnIndex3;
-                    hideThird();
-                    addFourthClass();
-                    thirdPageChoice();
+                else if(btnIndex4 == 4){
+                    btnIndex4 = btnIndex4 + 1;
+                    console.log(btnIndex4);
+                    keyword4 = keyWord3+btnIndex4;
+                    pageCode4 = btnIndex4;
+                    console.log(keyWord4);
+                    hideFourth();
+                    addFifthClass();
+                    fourthPageChoice();
+                    breadcrumb = document.createElement("span");
+                    breadcrumb.setAttribute("class","bread5");
+                    bread1 = document.createTextNode( ' | ' + thirdContentTitle);
+                    breadcrumb.appendChild(bread1);
+                    document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                     if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                         removeArrow();
                     }
                 }
-                else if(btnIndex3 == 5){
-                    btnIndex3 = btnIndex3 + 1;
-                    console.log(btnIndex3);
-                    keyWord3 = keyWord+btnIndex3;
-                    pageCode3 = btnIndex3;
-                    hideThird();
-                    addFourthClass();
-                    thirdPageChoice();
+                else if(btnIndex4 == 5){
+                    btnIndex4 = btnIndex4 + 1;
+                    console.log(btnIndex4);
+                    keyword4 = keyWord3+btnIndex4;
+                    pageCode4 = btnIndex4;
+                    console.log(keyWord4);
+                    hideFourth();
+                    addFifthClass();
+                    fourthPageChoice();
+                    breadcrumb = document.createElement("span");
+                    breadcrumb.setAttribute("class","bread5");
+                    bread1 = document.createTextNode( ' | ' + thirdContentTitle);
+                    breadcrumb.appendChild(bread1);
+                    document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                     if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                         removeArrow();
                     }
                 }
-                else if(btnIndex3 == 6){
-                    btnIndex3 = btnIndex3 + 1;
-                    console.log(btnIndex3);
-                    keyWord3 = keyWord+btnIndex3;
-                    pageCode3 = btnIndex3;
-                    hideThird();
-                    addFourthClass();
-                    thirdPageChoice();
+                else if(btnIndex4 == 6){
+                    btnIndex4 = btnIndex4 + 1;
+                    console.log(btnIndex4);
+                    keyword4 = keyWord3+btnIndex4;
+                    pageCode4 = btnIndex4;
+                    console.log(keyWord4);
+                    hideFourth();
+                    addFifthClass();
+                    fourthPageChoice();
+                    breadcrumb = document.createElement("span");
+                    breadcrumb.setAttribute("class","bread5");
+                    bread1 = document.createTextNode( ' | ' + thirdContentTitle);
+                    breadcrumb.appendChild(bread1);
+                    document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                     if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                         removeArrow();
                     }
                 }
-                else if(btnIndex3 == 7){
-                    btnIndex3 = btnIndex3 + 1;
-                    console.log(btnIndex3);
-                    keyWord3 = keyWord+btnIndex3;
-                    pageCode3 = btnIndex3;
-                    hideThird();
-                    addFourthClass();
-                    thirdPageChoice();
+                else if(btnIndex4 == 7){
+                    btnIndex4 = btnIndex4 + 1;
+                    console.log(btnIndex4);
+                    keyword4 = keyWord3+btnIndex4;
+                    pageCode4 = btnIndex4;
+                    console.log(keyWord4);
+                    hideFourth();
+                    addFifthClass();
+                    fourthPageChoice();
+                    breadcrumb = document.createElement("span");
+                    breadcrumb.setAttribute("class","bread5");
+                    bread1 = document.createTextNode( ' | ' + thirdContentTitle);
+                    breadcrumb.appendChild(bread1);
+                    document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                     if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                         removeArrow();
                     }
                 }
-                else if(btnIndex3 == 8){
-                    btnIndex3 = btnIndex3 + 1;
-                    console.log(btnIndex3);
-                    keyWord3 = keyWord+btnIndex3;
-                    pageCode3 = btnIndex3;
-                    hideThird();
-                    addFourthClass();
-                    thirdPageChoice();
+                else if(btnIndex4 == 8){
+                    btnIndex4 = btnIndex4 + 1;
+                    console.log(btnIndex4);
+                    keyword4 = keyWord3+btnIndex4;
+                    pageCode4 = btnIndex4;
+                    console.log(keyWord4);
+                    hideFourth();
+                    addFifthClass();
+                    fourthPageChoice();
+                    breadcrumb = document.createElement("span");
+                    breadcrumb.setAttribute("class","bread5");
+                    bread1 = document.createTextNode( ' | ' + thirdContentTitle);
+                    breadcrumb.appendChild(bread1);
+                    document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                     if( $("#peritem input:last").val() == "0) Back" || $("#peritem input:visible").val() == "1) Subscribe"  ){
                         removeArrow();
                     }
@@ -1140,21 +1351,25 @@ $(function (){
             hideSecond();
             showFirst();
             removeSecondClass();
+            $('.bread2').remove();
         }
         else if($('#prev-content').hasClass('thirdLevel')){
             hideThird();
             showSecond();
             removeThirdClass();
+            $('.bread3').remove();
         }
         else if($('#prev-content').hasClass('fourthLevel')){
             hideFourth();
             showThird();
             removeFourthClass();
+            $('.bread4').remove();
         }
         else if($('#prev-content').hasClass('fifthLevel')){
             hideFifth();
             showFourth();
             removeFifthClass();
+            $('.bread5').remove();
         }
     })
 
@@ -1197,18 +1412,85 @@ $(function (){
     onChangeBtn();
      
 
-    $('#save-button').click(function(){
+    $('#save-button').click(function(e){
         if($('#save-button').hasClass('first-button')){
-            convertFirstInput();
-            updateFirstMenu();
+            var isValid = true;
+            $('input[type="text"]:visible').each(function() {
+                if ($.trim($(this).val()) == '') {
+                    isValid = false;
+                    $(this).css({
+                        "border": "1px solid red",
+                        "background": "#FFCECE"
+                    });
+                }
+                else {
+                    $(this).css({
+                        "border": "",
+                        "background": ""
+                    });
+                }
+            });
+            if (isValid == false) 
+                e.preventDefault();
+            else {
+                convertFirstInput();   
+                updateFirstMenu();
+                alert('Thank you for submitting');
+            }
+            
+            
         }
         else if($('#save-button').hasClass('second-button')){
-            convertInputResults();
-            updateSecondMenu();
+            var isValid = true;
+            $('input[type="text"]:visible').each(function() {
+                if ($.trim($(this).val()) == '') {
+                    isValid = false;
+                    $(this).css({
+                        "border": "1px solid red",
+                        "background": "#FFCECE"
+                    });
+                }
+                else {
+                    $(this).css({
+                        "border": "",
+                        "background": ""
+                    });
+                }
+            });
+            if (isValid == false) 
+                e.preventDefault();
+            else {
+                convertInputResults();
+                updateSecondMenu();
+                alert('Thank you for submitting');
+            }
+            
         }
         else if($('#save-button').hasClass('third-button')){
-            convertThirdInputResults();
-            updateThirdMenu();
+            var isValid = true;
+            $('input[type="text"]:visible').each(function() {
+                if ($.trim($(this).val()) == '') {
+                    isValid = false;
+                    $(this).css({
+                        "border": "1px solid red",
+                        "background": "#FFCECE"
+                    });
+                }
+                else {
+                    $(this).css({
+                        "border": "",
+                        "background": ""
+                    });
+                }
+            });
+            if (isValid == false) 
+                e.preventDefault();
+            else {
+                convertThirdInputResults();
+                updateThirdMenu();
+                alert('Thank you for submitting');
+            }
+            
         }
     });
 
