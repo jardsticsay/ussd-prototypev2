@@ -54,8 +54,8 @@ window.onload = function(){
                     
                 });
                 $('.no-border').click(function(){
-                    inputVal1 = $('#item-list4').val()
-                    console.log(inputVal1)
+                    firstVal = $(this).val();
+                    console.log(firstVal);
                 })
             }
         }
