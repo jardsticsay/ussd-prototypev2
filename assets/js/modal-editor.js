@@ -7,11 +7,11 @@ var data;
 var mainMenu;
 var orderList;
 var inputList;
+var devX;
 
 
 window.onload = function(){ 
     function getMainMenu(){
-        let orderList = '<ul>';
         let dataToPass ={
             "method":"select",
             "data":{
@@ -26,7 +26,6 @@ window.onload = function(){
         xhr.onreadystatechange = function(){
             if(xhr.readyState != 4 || xhr.status != 200){
                 xmldata = xhr.responseText;
-                console.log(data);
             }
             else{
                 data = xhr.responseText;
@@ -35,17 +34,30 @@ window.onload = function(){
                 console.log(parseData);
                 console.log(parseData.methodResponse.content);
                 convArrays = parseData.methodResponse.content.split('|');
+                heading = parseData.methodResponse.header;
                 console.log(convArrays);
+                lts = document.getElementById('headerContent');
+                let textA = document.createElement("p");
+                let nodeA = document.createTextNode(heading);
+                textA.value = heading;
+                zxc = textA.appendChild(nodeA);
+                lts.appendChild(zxc);
                 convArrays.forEach(function (convArray, i){
-                    convArray = convArray.split('_').join(') ');
                     console.log(convArray);
-                    orderList += '<li>' +convArray+ '</li>';
+                    convArray = convArray.split('_').join(') ');
+                    var input = document.createElement("input");
+                    input.type = "text";
+                    input.id = "item-list" + i;
+                    input.className = "no-border";
+                    input.value = convArray;
+                    document.getElementById("peritem").appendChild(input);
+                    
                 });
-                orderList += '</ul>';
-                document.getElementById("peritem").innerHTML = orderList;
-                testData = orderList;
+                $('.no-border').click(function(){
+                    inputVal1 = $('#item-list4').val()
+                    console.log(inputVal1)
+                })
             }
-            console.log(orderList);
         }
         xhr.send(JSON.stringify(dataToPass));
     }
@@ -53,37 +65,46 @@ window.onload = function(){
     var btnModal = document.getElementById("modalpop");
     var modal = document.getElementById("myModal");
     var spanX = document.getElementsByClassName("close")[0];
-    
+    var contain = document.getElementById('content-menu1');
     btnModal.onclick = function(){
         console.log(convArrays);
+        textA = document.createElement("textarea");
+        textA.name = "post";
+        textA.rows = "3";
+        textA.value = heading;
+        contain.appendChild(textA);
+        btnSave = document.createElement("input");
+        btnSave.type = "button";
+        btnSave.value = "Save";
+        btnSave.className = "btn btn-primary saveMe";
+        
         modal.style.display = "block";
-        convArrays.forEach(function (array, i){
-
-            console.log(i);
+        convArrays.forEach(function (array, a){
             array = array.split('_').join(') ');
-            console.log(array);
-            inputList += '<input>' + array + '<br>';
-            abc = document.createElement("input");
-            abc.setAttribute("value", array);
-            // input = document.createElement("INPUT");
-            // input.setAttribute("type", "text");
-            // input.setAttribute("id", "menu-item" +i);
-            // input.setAttribute("value", array[i]);
-            // document.getElementById("content-menu1").appendChild(input);
+            var input = document.createElement("INPUT");
+            input.type = "text";
+            input.setAttribute("id", "edit-item" +a);
+            input.className = "first-choice";
+            input.value = array;
+            contain.appendChild(input);
+            
         })
-        document.getElementById("content-menu1").appendChild(abc);
-        console.log(document.getElementById("content-menu1").appendChild(abc));
-        document.getElementById("content-menu1").innerHTML = inputList;
+        contain.appendChild(btnSave);
+        
     }
     
     spanX.onclick = function(){
+        contain.innerHTML = "";
         modal.style.display = "none";
     }
     
     window.onclick = function(event){
         if (event.target == modal){
+            contain.innerHTML = "";
             modal.style.display = "none";
         }
     }
-};
 
+    
+    
+};

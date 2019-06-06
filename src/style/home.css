@@ -334,6 +334,31 @@ i.fa.fa-edit {
   cursor: pointer;
 }
 
+.first-choice{
+  width:100%;
+  margin-top:2vh;
+}
+
+div#content-menu1 {
+  text-align:center;
+}
+.saveMe{
+  margin-top:5vh;
+}
+textarea{
+  width:100%;
+}
+.no-border{
+  border:none;
+  width:100%;
+  margin:0.4vh;
+  outline:none;
+  cursor: pointer;
+  color:#1a73e8;
+}
+.no-border:focus{
+  outline:none !important;
+}
 /* .tooltip.top .tooltip-inner {
   background-color:#2dbe60;
 }
