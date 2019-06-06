@@ -441,6 +441,7 @@ $(function (){
         }).get();
         console.log(arrayOne);
         arrayFirst = arrayOne.join('|');
+        console.log(arrayFirst);
         arrayFirstResult = arrayFirst.split(') ').join('_');
         contentResult = arrayFirstResult;
         console.log(contentResult);

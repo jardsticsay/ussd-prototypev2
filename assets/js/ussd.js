@@ -80,7 +80,6 @@ $(function (){
             },
             error: function(textStatus,errorThrown){
                 alert('Network connection error, Reload page');
-                location.reload();
             },
             async: false
         });
