@@ -3,6 +3,8 @@ var username = "ussd";
 var password = "ussd2019";
 var actionPoint = "http://127.0.0.1/SwissKnife_dev_stage/databank.cgi";
 var xhr = new XMLHttpRequest();
+var keyword = "keyword";
+var actualKey = "actualKeyword";
 var data;
 var mainMenu;
 var orderList;
@@ -36,27 +38,31 @@ window.onload = function(){
                 convArrays = parseData.methodResponse.content.split('|');
                 heading = parseData.methodResponse.header;
                 console.log(convArrays);
-                lts = document.getElementById('headerContent');
-                let textA = document.createElement("p");
-                let nodeA = document.createTextNode(heading);
-                textA.value = heading;
-                zxc = textA.appendChild(nodeA);
-                lts.appendChild(zxc);
+                textarea = document.createElement("textarea");
+                taContent = document.createTextNode(heading);
+                textarea.type = "text";
+                textarea.className = "no-border no-cursor firstHeader";
+                textarea.appendChild(taContent);
+                document.getElementById('headerContent').appendChild(textarea);
                 convArrays.forEach(function (convArray, i){
                     console.log(convArray);
                     convArray = convArray.split('_').join(') ');
                     var input = document.createElement("input");
                     input.type = "text";
                     input.id = "item-list" + i;
-                    input.className = "no-border";
+                    input.className = "no-border firstItems";
                     input.value = convArray;
                     document.getElementById("peritem").appendChild(input);
                     
                 });
+
+                 
                 $('.no-border').click(function(){
                     firstVal = $(this).val();
                     console.log(firstVal);
-                })
+                    searchKeyword();
+                })   
+               
             }
         }
         xhr.send(JSON.stringify(dataToPass));
@@ -105,6 +111,173 @@ window.onload = function(){
         }
     }
 
+    function searchKeyword(){
+        dbfirstVal = firstVal.split(') ').join('_');
+        console.log(dbfirstVal);
+        let dataToPass = {
+            "method":"searchTwoField",
+            "data":{
+                "table":keyword,
+                "field1":actualKey,
+                "value1":dbfirstVal,
+                "operator":"AND",
+                "field2":actualKey,
+                "value2":dbfirstVal
+            }
+        }
+        xhr.open("POST", apiUrl, true);
+        xhr.setRequestHeader("Basic", btoa(username +":"+ password));
+        xhr.setRequestHeader("Action",actionPoint);
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState != 4 || xhr.status != 200){
+                xmldata = xhr.responseText;
+            }
+            else{
+                secondData = xhr.responseText;
+                secondMenu = JSON.parse(secondData);
+                console.log(secondMenu);
+                convArrays = secondMenu.methodResponse.queryList[0].content.split('|');
+                console.log(convArrays);
+                heading = secondMenu.methodResponse.queryList[0].header;
+                textarea = document.createElement("textarea");
+                taContent = document.createTextNode(heading);
+                textarea.type = "text";
+                textarea.className = "no-border no-cursor secondHeader";
+                textarea.appendChild(taContent);
+                document.getElementById('headerContent').appendChild(textarea);
+                convArrays.forEach(function (convArray, i){
+                    console.log(convArray);
+                    convArray = convArray.split('_').join(') ');
+                    let input = document.createElement("input");
+                    input.type = "text";
+                    input.id = "second-item"+i;
+                    input.className = "no-border secondItems";
+                    input.value = convArray;
+                    $('.firstItems').hide();
+                    document.getElementById("peritem").appendChild(input);
+
+                })
+                $('.firstHeader').hide();
+                $('.no-border').click(function(){
+                    firstVal = $(this).val();
+                    console.log(firstVal);
+                    searchKeywordTwo();
+                })
+            }
+        }
+        xhr.send(JSON.stringify(dataToPass));
+    }
+
+    function searchKeywordTwo(){
+        dbfirstVal = firstVal.split(') ').join('_');
+        console.log(dbfirstVal);
+        let dataToPass = {
+            "method":"searchTwoField",
+            "data":{
+                "table":keyword,
+                "field1":actualKey,
+                "value1":dbfirstVal,
+                "operator":"AND",
+                "field2":actualKey,
+                "value2":dbfirstVal
+            }
+        }
+        xhr.open("POST", apiUrl, true);
+        xhr.setRequestHeader("Basic", btoa(username +":"+ password));
+        xhr.setRequestHeader("Action",actionPoint);
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState != 4 || xhr.status != 200){
+                xmldata = xhr.responseText;
+            }
+            else{
+                secondData = xhr.responseText;
+                secondMenu = JSON.parse(secondData);
+                console.log(secondMenu);
+                convArrays = secondMenu.methodResponse.queryList[0].content.split('|');
+                console.log(convArrays);
+                heading = secondMenu.methodResponse.queryList[0].header;
+                textarea = document.createElement("textarea");
+                taContent = document.createTextNode(heading);
+                textarea.type = "text";
+                textarea.className = "no-border no-cursor thirdHeader";
+                textarea.appendChild(taContent);
+                document.getElementById('headerContent').appendChild(textarea);
+                convArrays.forEach(function (convArray, i){
+                    console.log(convArray);
+                    convArray = convArray.split('_').join(') ');
+                    let input = document.createElement("input");
+                    input.type = "text";
+                    input.id = "second-item"+i;
+                    input.className = "no-border thirdItems";
+                    input.value = convArray;
+                    $('.secondItems').hide();
+                    document.getElementById("peritem").appendChild(input);
+
+                })
+                $('.firstHeader').hide();
+                $('.no-border').click(function(){
+                    firstVal = $(this).val();
+                    console.log(firstVal);
+                    searchKeywordThree();
+                })
+            }
+        }
+        xhr.send(JSON.stringify(dataToPass));
+    }
     
-    
+    function searchKeywordThree(){
+        dbfirstVal = firstVal.split(') ').join('_');
+        console.log(dbfirstVal);
+        let dataToPass = {
+            "method":"searchTwoField",
+            "data":{
+                "table":keyword,
+                "field1":actualKey,
+                "value1":dbfirstVal,
+                "operator":"AND",
+                "field2":actualKey,
+                "value2":dbfirstVal
+            }
+        }
+        xhr.open("POST", apiUrl, true);
+        xhr.setRequestHeader("Basic", btoa(username +":"+ password));
+        xhr.setRequestHeader("Action",actionPoint);
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState != 4 || xhr.status != 200){
+                xmldata = xhr.responseText;
+            }
+            else{
+                secondData = xhr.responseText;
+                secondMenu = JSON.parse(secondData);
+                console.log(secondMenu);
+                convArrays = secondMenu.methodResponse.queryList[0].content.split('|');
+                console.log(convArrays);
+                heading = secondMenu.methodResponse.queryList[0].header;
+                textarea = document.createElement("textarea");
+                taContent = document.createTextNode(heading);
+                textarea.type = "text";
+                textarea.className = "no-border no-cursor thirdHeader";
+                textarea.appendChild(taContent);
+                document.getElementById('headerContent').appendChild(textarea);
+                convArrays.forEach(function (convArray, i){
+                    console.log(convArray);
+                    convArray = convArray.split('_').join(') ');
+                    let input = document.createElement("input");
+                    input.type = "text";
+                    input.id = "second-item"+i;
+                    input.className = "no-border thirdItems";
+                    input.value = convArray;
+                    $('.secondItems').hide();
+                    document.getElementById("peritem").appendChild(input);
+
+                })
+                $('.firstHeader').hide();
+                $('.no-border').click(function(){
+                    firstVal = $(this).val();
+                    console.log(firstVal);
+                })
+            }
+        }
+        xhr.send(JSON.stringify(dataToPass));
+    }
 };
