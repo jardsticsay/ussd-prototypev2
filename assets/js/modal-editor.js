@@ -5,6 +5,7 @@ var actionPoint = "http://127.0.0.1/SwissKnife_dev_stage/databank.cgi";
 var xhr = new XMLHttpRequest();
 var keyword = "keyword";
 var actualKey = "actualKeyword";
+var mainKey = "mainKeyword";
 var data;
 var mainMenu;
 var orderList;
@@ -264,7 +265,7 @@ window.onload = function(){
                     convArray = convArray.split('_').join(') ');
                     let input = document.createElement("input");
                     input.type = "text";
-                    input.id = "second-item"+i;
+                    input.id = "third-item"+i;
                     input.className = "no-border thirdItems";
                     input.value = convArray;
                     $('.secondItems').hide();
