@@ -73,6 +73,7 @@ window.onload = function(){
     var modal = document.getElementById("myModal");
     var spanX = document.getElementsByClassName("close")[0];
     var contain = document.getElementById('content-menu1');
+    var saveBtn = document.getElementById('btn-Save');
     btnModal.onclick = function(){
         console.log(convArrays);
         textA = document.createElement("textarea");
@@ -88,15 +89,34 @@ window.onload = function(){
         modal.style.display = "block";
         convArrays.forEach(function (array, a){
             array = array.split('_').join(') ');
-            var input = document.createElement("INPUT");
-            input.type = "text";
-            input.setAttribute("id", "edit-item" +a);
-            input.className = "first-choice";
-            input.value = array;
-            contain.appendChild(input);
+            $('#addScnt').click(function() {
+                $('<p><label for="p_scnts"><input type="text" id="p_scnt" size="20" name="p_scnt_' + a +'" value="" placeholder="Input Value" /></label> <a href="#" id="remScnt">Remove</a></p>').appendTo(contain);
+                i++;
+                return false;
+            });
+            $('#remScnt').click(function() { 
+                if( a > 2 ) {
+                        $(this).parents('p').remove();
+                        a--;
+                }
+                return false;
+            });
+            $('<p><label for="p_scnts"><input type="text" id="p_scnt" size="20" name="p_scnt_' + a +'" value="'+ array +'"  /></label> <a href="#" id="remScnt">Remove</a></p>').appendTo(contain);
+            a++;
+            return false;
             
+            // array = array.split('_').join(') ');
+            // var input = document.createElement("INPUT");
+            // input.type = "text";
+            // input.setAttribute("id", "edit-item" +a);
+            // input.className = "col-xs-10 first-choice";
+            // input.value = array;
+            // icon = document.createElement("i");
+            // icon.className = "col-xs-2 fa fa-trash";
+            // contain.appendChild(input);
+            // contain.appendChild(icon);
         })
-        contain.appendChild(btnSave);
+        saveBtn.appendChild(btnSave);
         
     }
     
@@ -159,9 +179,9 @@ window.onload = function(){
 
                 })
                 $('.firstHeader').hide();
-                $('.no-border').click(function(){
-                    firstVal = $(this).val();
-                    console.log(firstVal);
+                $('.secondItems').click(function(){
+                    secondVal = $(this).val();
+                    console.log(secondVal,'this is 2nd');
                     searchKeywordTwo();
                 })
             }
@@ -171,18 +191,21 @@ window.onload = function(){
 
     function searchKeywordTwo(){
         dbfirstVal = firstVal.split(') ').join('_');
+        secondVal = secondVal.split(') ').join('_');
+        console.log(secondVal);
         console.log(dbfirstVal);
         let dataToPass = {
             "method":"searchTwoField",
             "data":{
                 "table":keyword,
-                "field1":actualKey,
+                "field1":mainKey,
                 "value1":dbfirstVal,
                 "operator":"AND",
                 "field2":actualKey,
-                "value2":dbfirstVal
+                "value2":secondVal
             }
         }
+        console.log(dataToPass);
         xhr.open("POST", apiUrl, true);
         xhr.setRequestHeader("Basic", btoa(username +":"+ password));
         xhr.setRequestHeader("Action",actionPoint);
@@ -215,10 +238,10 @@ window.onload = function(){
                     document.getElementById("peritem").appendChild(input);
 
                 })
-                $('.firstHeader').hide();
-                $('.no-border').click(function(){
-                    firstVal = $(this).val();
-                    console.log(firstVal);
+                $('.secondHeader').hide();
+                $('.thirdItems').click(function(){
+                    thirdVal = $(this).val();
+                    console.log(thirdVal);
                     searchKeywordThree();
                 })
             }
@@ -229,17 +252,19 @@ window.onload = function(){
     function searchKeywordThree(){
         dbfirstVal = firstVal.split(') ').join('_');
         console.log(dbfirstVal);
+        console.log(thirdVal);
         let dataToPass = {
             "method":"searchTwoField",
             "data":{
                 "table":keyword,
-                "field1":actualKey,
+                "field1":mainKey,
                 "value1":dbfirstVal,
                 "operator":"AND",
                 "field2":actualKey,
-                "value2":dbfirstVal
+                "value2":thirdVal
             }
         }
+        console.log(dataToPass);
         xhr.open("POST", apiUrl, true);
         xhr.setRequestHeader("Basic", btoa(username +":"+ password));
         xhr.setRequestHeader("Action",actionPoint);
