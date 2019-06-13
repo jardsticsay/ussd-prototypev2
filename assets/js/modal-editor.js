@@ -36,6 +36,7 @@ window.onload = function(){
                 parseData = JSON.parse(data);
                 console.log(parseData);
                 console.log(parseData.methodResponse.content);
+                getID = parseData.methodResponse.returnID;
                 convArrays = parseData.methodResponse.content.split('|');
                 heading = parseData.methodResponse.header;
                 console.log(convArrays);
@@ -76,58 +77,81 @@ window.onload = function(){
     var saveBtn = document.getElementById('btn-Save');
     btnModal.onclick = function(){
         console.log(convArrays);
+        console.log(heading);
+        console.log(getID);
         textA = document.createElement("textarea");
         textA.name = "post";
         textA.rows = "3";
+        textA.className = "modal-head";
         textA.value = heading;
         contain.appendChild(textA);
         btnSave = document.createElement("input");
         btnSave.type = "button";
         btnSave.value = "Save";
         btnSave.className = "btn btn-primary saveMe";
-        
+        i = $('#p_scents p').length;
         modal.style.display = "block";
         convArrays.forEach(function (array, a){
             array = array.split('_').join(') ');
-            $('#addScnt').click(function() {
-                $('<p><label for="p_scnts"><input type="text" id="p_scnt" size="20" name="p_scnt_' + a +'" value="" placeholder="Input Value" /></label> <a href="#" id="remScnt">Remove</a></p>').appendTo(contain);
-                i++;
-                return false;
-            });
-            $('#remScnt').click(function() { 
+            
+            $('<p><label class="col-xs-10" for="p_scnts"><input type="text" class="p_scnt" name="p_scnt_' + a +'" value="'+ array +'"  /></label> <i class="fa fa-minus-circle col-xs-2 remScnt"></i></p>').appendTo(contain);
+            a++;
+            $('.remScnt').click(function() {
+                console.log('rmv clicked'); 
                 if( a > 2 ) {
                         $(this).parents('p').remove();
                         a--;
                 }
+                console.log(a);
                 return false;
             });
-            $('<p><label for="p_scnts"><input type="text" id="p_scnt" size="20" name="p_scnt_' + a +'" value="'+ array +'"  /></label> <a href="#" id="remScnt">Remove</a></p>').appendTo(contain);
-            a++;
-            return false;
+
             
-            // array = array.split('_').join(') ');
-            // var input = document.createElement("INPUT");
-            // input.type = "text";
-            // input.setAttribute("id", "edit-item" +a);
-            // input.className = "col-xs-10 first-choice";
-            // input.value = array;
-            // icon = document.createElement("i");
-            // icon.className = "col-xs-2 fa fa-trash";
-            // contain.appendChild(input);
-            // contain.appendChild(icon);
         })
+        $('#addScnt').click(function() {
+            $('<p><label class="col-xs-10" for="p_scnts"><input type="text" class="p_scnt" name="p_scnt_' + i +'" value="" placeholder="Input Value" /></label> <i class="fa fa-minus-circle col-xs-2 remScnt"></i></p>').appendTo(contain);
+            i++;
+            console.log(i);
+            return false;
+        });
+        
+        $('.remScnt').click(function() {
+            console.log('rmv clicked'); 
+            if( i < 0 ) {
+                    $(this).parents('p').remove();
+                    i--;
+            }
+            console.log(i);
+            return false;
+        });
         saveBtn.appendChild(btnSave);
         
+        $('.saveMe').click(function(){
+            arrayOne = $('.p_scnt').map(function() {
+                return this.value;
+            }).get();
+            console.log(arrayOne);
+            arrayOne = arrayOne.join('|');
+            console.log(arrayOne);
+            arrayOne = arrayOne.split(') ').join('_');
+            console.log(arrayOne);
+            headings = $('.modal-head').val();
+            console.log(headings);
+            saveData();
+            
+        });
     }
     
     spanX.onclick = function(){
         contain.innerHTML = "";
+        saveBtn.innerHTML ="";
         modal.style.display = "none";
     }
     
     window.onclick = function(event){
         if (event.target == modal){
             contain.innerHTML = "";
+            saveBtn.innerHTML ="";
             modal.style.display = "none";
         }
     }
@@ -159,6 +183,8 @@ window.onload = function(){
                 console.log(secondMenu);
                 convArrays = secondMenu.methodResponse.queryList[0].content.split('|');
                 console.log(convArrays);
+                getID = secondMenu.methodResponse.queryList[0].id;
+
                 heading = secondMenu.methodResponse.queryList[0].header;
                 textarea = document.createElement("textarea");
                 taContent = document.createTextNode(heading);
@@ -302,6 +328,37 @@ window.onload = function(){
                     firstVal = $(this).val();
                     console.log(firstVal);
                 })
+            }
+        }
+        xhr.send(JSON.stringify(dataToPass));
+    }
+
+    function saveData(){
+        dataToPass = {
+            "method":"update",
+            "data":{
+                "table":"keyword",
+                "returnID":getID,
+                "fieldName":"id",
+                "header":headings,
+                "content":arrayOne
+            }
+        }
+        xhr.open("POST", apiUrl, true);
+        xhr.setRequestHeader("Basic", btoa(username +":"+ password));
+        xhr.setRequestHeader("Action",actionPoint);
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState != 4 || xhr.status != 200){
+                xmldata = xhr.responseText;
+            }
+            else{
+                saveData = xhr.responseText;
+                saveData = JSON.parse(saveData);
+                console.log(saveData);
+                document.getElementById('peritem').innerHTML="";
+                document.getElementsByClassName('modal-head').innerHTML="";
+                alert('Changes saved!');
+                getMainMenu();
             }
         }
         xhr.send(JSON.stringify(dataToPass));
