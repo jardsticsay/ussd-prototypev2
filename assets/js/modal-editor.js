@@ -57,8 +57,6 @@ window.onload = function(){
                     document.getElementById("peritem").appendChild(input);
                     
                 });
-
-                 
                 $('.no-border').click(function(){
                     firstVal = $(this).val();
                     console.log(firstVal);
@@ -184,7 +182,6 @@ window.onload = function(){
                 convArrays = secondMenu.methodResponse.queryList[0].content.split('|');
                 console.log(convArrays);
                 getID = secondMenu.methodResponse.queryList[0].id;
-
                 heading = secondMenu.methodResponse.queryList[0].header;
                 textarea = document.createElement("textarea");
                 taContent = document.createTextNode(heading);
@@ -192,6 +189,12 @@ window.onload = function(){
                 textarea.className = "no-border no-cursor secondHeader";
                 textarea.appendChild(taContent);
                 document.getElementById('headerContent').appendChild(textarea);
+                breadcrumb = document.createElement("span");
+                breadcrumb.className = "breadTwo";
+                firstCleanVal = dbfirstVal.split('_').join(') ');
+                breadTwo = document.createTextNode(' > ' + firstCleanVal);
+                breadcrumb.appendChild(breadTwo)
+                document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                 convArrays.forEach(function (convArray, i){
                     console.log(convArray);
                     convArray = convArray.split('_').join(') ');
@@ -252,6 +255,12 @@ window.onload = function(){
                 textarea.className = "no-border no-cursor thirdHeader";
                 textarea.appendChild(taContent);
                 document.getElementById('headerContent').appendChild(textarea);
+                breadcrumb = document.createElement("span");
+                breadcrumb.className = "breadTwo";
+                secondCleanVal = secondVal.split('_').join(') ');
+                breadThree = document.createTextNode(' > ' + secondCleanVal);
+                breadcrumb.appendChild(breadThree);
+                document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                 convArrays.forEach(function (convArray, i){
                     console.log(convArray);
                     convArray = convArray.split('_').join(') ');
@@ -277,8 +286,6 @@ window.onload = function(){
     
     function searchKeywordThree(){
         dbfirstVal = firstVal.split(') ').join('_');
-        console.log(dbfirstVal);
-        console.log(thirdVal);
         let dataToPass = {
             "method":"searchTwoField",
             "data":{

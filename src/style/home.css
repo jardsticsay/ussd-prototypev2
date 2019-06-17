@@ -26,7 +26,9 @@ border:none;
 border-bottom:2px solid #4498bd;
 width:100%;
 }
-
+.fa-minus-circle{
+  color:#da4a4a
+}
 
 .input-container:focus{
 outline:none;
