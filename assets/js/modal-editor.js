@@ -32,14 +32,10 @@ window.onload = function(){
             }
             else{
                 data = xhr.responseText;
-                console.log(data);
                 parseData = JSON.parse(data);
-                console.log(parseData);
-                console.log(parseData.methodResponse.content);
                 getID = parseData.methodResponse.returnID;
                 convArrays = parseData.methodResponse.content.split('|');
                 heading = parseData.methodResponse.header;
-                console.log(convArrays);
                 textarea = document.createElement("textarea");
                 taContent = document.createTextNode(heading);
                 textarea.type = "text";
@@ -47,7 +43,6 @@ window.onload = function(){
                 textarea.appendChild(taContent);
                 document.getElementById('headerContent').appendChild(textarea);
                 convArrays.forEach(function (convArray, i){
-                    console.log(convArray);
                     convArray = convArray.split('_').join(') ');
                     var input = document.createElement("input");
                     input.type = "text";
@@ -59,7 +54,6 @@ window.onload = function(){
                 });
                 $('.no-border').click(function(){
                     firstVal = $(this).val();
-                    console.log(firstVal);
                     searchKeyword();
                 })   
                
@@ -74,14 +68,13 @@ window.onload = function(){
     var contain = document.getElementById('content-menu1');
     var saveBtn = document.getElementById('btn-Save');
     btnModal.onclick = function(){
-        console.log(convArrays);
-        console.log(heading);
         console.log(getID);
         textA = document.createElement("textarea");
         textA.name = "post";
         textA.rows = "3";
         textA.className = "modal-head";
-        textA.value = heading;
+        visibleHeading = $('textarea:visible').val();
+        textA.value = visibleHeading;
         contain.appendChild(textA);
         btnSave = document.createElement("input");
         btnSave.type = "button";
@@ -89,9 +82,11 @@ window.onload = function(){
         btnSave.className = "btn btn-primary saveMe";
         i = $('#p_scents p').length;
         modal.style.display = "block";
-        convArrays.forEach(function (array, a){
-            array = array.split('_').join(') ');
-            
+        visbileEntry = $('input[type="text"]:visible').map(function(){
+            return this.value;
+        });
+        console.log(visbileEntry);
+        visbileEntry.each(function (a, array){
             $('<p><label class="col-xs-10" for="p_scnts"><input type="text" class="p_scnt" name="p_scnt_' + a +'" value="'+ array +'"  /></label> <i class="fa fa-minus-circle col-xs-2 remScnt"></i></p>').appendTo(contain);
             a++;
             $('.remScnt').click(function() {
@@ -103,8 +98,6 @@ window.onload = function(){
                 console.log(a);
                 return false;
             });
-
-            
         })
         $('#addScnt').click(function() {
             $('<p><label class="col-xs-10" for="p_scnts"><input type="text" class="p_scnt" name="p_scnt_' + i +'" value="" placeholder="Input Value" /></label> <i class="fa fa-minus-circle col-xs-2 remScnt"></i></p>').appendTo(contain);
@@ -182,6 +175,7 @@ window.onload = function(){
                 convArrays = secondMenu.methodResponse.queryList[0].content.split('|');
                 console.log(convArrays);
                 getID = secondMenu.methodResponse.queryList[0].id;
+                console.log(getID);
                 heading = secondMenu.methodResponse.queryList[0].header;
                 textarea = document.createElement("textarea");
                 taContent = document.createTextNode(heading);
@@ -191,10 +185,16 @@ window.onload = function(){
                 document.getElementById('headerContent').appendChild(textarea);
                 breadcrumb = document.createElement("span");
                 breadcrumb.className = "breadTwo";
+                breadSpan = document.createElement("span");
+                breadSpanNode = document.createTextNode(">");
+                breadSpan.appendChild(breadSpanNode);
+                console.log(breadSpan);
                 firstCleanVal = dbfirstVal.split('_').join(') ');
-                breadTwo = document.createTextNode(' > ' + firstCleanVal);
-                breadcrumb.appendChild(breadTwo)
-                document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
+                spanner = '<span class="breadOne"><span class="gray"> > </span>' + '<a>'+firstCleanVal+'</a></span>';
+                // breadTwo = document.createTextNode(' > ' + firstCleanVal);
+                // breadcrumb.appendChild(breadTwo);
+                // document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
+                document.getElementById('breadcrumb-entry').innerHTML += spanner;
                 convArrays.forEach(function (convArray, i){
                     console.log(convArray);
                     convArray = convArray.split('_').join(') ');
@@ -246,6 +246,8 @@ window.onload = function(){
                 secondData = xhr.responseText;
                 secondMenu = JSON.parse(secondData);
                 console.log(secondMenu);
+                getID = secondMenu.methodResponse.queryList[0].id;
+                console.log(getID);
                 convArrays = secondMenu.methodResponse.queryList[0].content.split('|');
                 console.log(convArrays);
                 heading = secondMenu.methodResponse.queryList[0].header;
@@ -256,11 +258,13 @@ window.onload = function(){
                 textarea.appendChild(taContent);
                 document.getElementById('headerContent').appendChild(textarea);
                 breadcrumb = document.createElement("span");
-                breadcrumb.className = "breadTwo";
+                breadcrumb.className = "breadThree";
                 secondCleanVal = secondVal.split('_').join(') ');
-                breadThree = document.createTextNode(' > ' + secondCleanVal);
-                breadcrumb.appendChild(breadThree);
-                document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
+                // breadThree = document.createTextNode(' > ' + secondCleanVal);
+                spanner1 = '<span class="breadOne"><span class="gray"> > </span>' + '<a>'+secondCleanVal+'</a></span>';
+                document.getElementById('breadcrumb-entry').innerHTML += spanner1;
+                // breadcrumb.appendChild(breadThree);
+                // document.getElementById('breadcrumb-entry').appendChild(breadcrumb);
                 convArrays.forEach(function (convArray, i){
                     console.log(convArray);
                     convArray = convArray.split('_').join(') ');
@@ -281,6 +285,7 @@ window.onload = function(){
                 })
             }
         }
+        navBreadRoute();
         xhr.send(JSON.stringify(dataToPass));
     }
     
@@ -328,7 +333,6 @@ window.onload = function(){
                     input.value = convArray;
                     $('.secondItems').hide();
                     document.getElementById("peritem").appendChild(input);
-
                 })
                 $('.firstHeader').hide();
                 $('.no-border').click(function(){
@@ -370,4 +374,19 @@ window.onload = function(){
         }
         xhr.send(JSON.stringify(dataToPass));
     }
+
+    function navBreadRoute(){
+        $('.breadTwo').click(function(){
+            clearThird = document.getElementsByClassName('breadThree');
+            $('.firstItems').hide();
+            $('.thirdItems').hide();
+            $('.secondItems').show();
+            $('.firstHeader').hide();
+            $('.thirdHeader').hide();
+            $('.secondHeader').show();
+            $('.breadThree').hide();
+        });
+    }
+
+    
 };
